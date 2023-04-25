@@ -1,7 +1,14 @@
+const { login, logout, register } = require('../controllers/auth.controller');
+
 const Router = require('express').Router();
 
-Router.post('/login', );
+// Créer un compte
+Router.post('/register', register);
 
-Router.post('/logout', );
+// Se connecter à un compte
+Router.post('/login', login);
+
+// Se deonnecter
+Router.post('/logout', logout);
 
 module.exports = Router;
