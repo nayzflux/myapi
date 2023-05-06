@@ -30,8 +30,7 @@ module.exports.register = async (req, res) => {
     if (doesEmailAlreadyUsed) return res.status(400).json({ success: false, message: "Cette email est déjà utilisée" });
 
     // Le password serait hasher plus tard
-    const user = await UserModel.create({ username, email, password })
-        .select('-password');
+    const user = await UserModel.create({ username, email, password });
 
     // Sauvegarder le cookie avec le token
     const token = signToken(user);
@@ -40,7 +39,7 @@ module.exports.register = async (req, res) => {
 
     // à vérifier pour la sécurité des cookie
     res.cookie('jwt', token, { httpOnly: true, secure: process.env.JWT_SECURE_COOKIE });
-    return res.status(201).json({ success: true, message: "Utilisateur créer avec succès", user: user });
+    return res.status(201).json({ success: true, message: "Utilisateur créer avec succès", user: { _id: user._id, username: user.username, email: user.email, role: user.role } });
 }
 
 /**
@@ -58,13 +57,13 @@ module.exports.login = async (req, res) => {
     if (!login || !password) return res.status(400).json({ success: false, message: "Merci de remplir tous les  champs" });
 
     // Obtenir l'utilisateur avec l'adresse email puis avec le nom d'utilisateur
-    const user = await UserModel.exists({ username }) || await UserModel.exists({ username });
+    const user = await UserModel.findOne({ username: login }) || await UserModel.findOne({ email: login });
 
     // Vérifier si l'utilisateur existe
     if (!user) return res.status(404).json({ success: false, message: "Aucun n'utilisateur n'existe avec cette email ou ce nom d'utilisateur" });
 
-    // Comparer les mot de passe
-    const doesPasswordMatch = user.verify(password)
+    // Comparer les mot de pass
+    const doesPasswordMatch = await UserModel.verifyPassword(user, password);
     if (!doesPasswordMatch) return res.status(401).json({ success: false, message: "Mot de passe incorrect" });
 
     // Sauvegarder le cookie avec le token
@@ -73,7 +72,7 @@ module.exports.login = async (req, res) => {
     console.log("[AUTH] Utilisateur connecté");
 
     // à vérifier pour la sécurité des cookie
-    res.cookie('jwt', token, { httpOnly: true, secure: process.env.JWT_SECURE_COOKIE });
+    res.cookie('jwt', token, { httpOnly: true, secure: false });
     return res.status(200).json({ success: true, message: `Connexion à l'utilisateur effectué avec succès`, user: { _id: user._id, email: user.email, username: user.username, role: user.role } });
 }
 

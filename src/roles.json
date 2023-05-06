@@ -1,0 +1,14 @@
+[
+    {
+        "id": 0,
+        "power": 0,
+        "display_name": "Utilisateur",
+        "name": "user"
+    },
+    {
+        "id": 1,
+        "power": 100,
+        "display_name": "Administrateur",
+        "name": "admin"
+    }
+]

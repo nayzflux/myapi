@@ -1,15 +1,19 @@
+const { get, getAll, remove } = require('../controllers/user.controller');
+const { canGetUser, canGetAllUsers, canDeleteUser } = require('../middlewares/permission.middleware');
+const { handleUser } = require('../middlewares/user.middleware');
+
 const Router = require('express').Router();
 
-// Récuperer
-Router.get('/:user', null);
+// // Récuperer
+// Router.get('/:query', canGetUser, handleUser, get);
 
-// Récuperer tous
-Router.get('/', null);
+// // Récuperer tous
+// Router.get('/', canGetAllUsers, getAll);
 
-// Modifier un utilisateur
-Router.patch('/:user', null);
+// // Modifier un utilisateur
+// Router.patch('/:query', null);
 
-// Supprimer
-Router.delete('/:user', null);
+// // Supprimer
+// Router.delete('/:query', canDeleteUser, handleUser, remove);
 
 module.exports = Router;

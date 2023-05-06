@@ -9,7 +9,8 @@ const { isValidEmail, isValidUsername } = require("../utils/utils");
  * @returns 
  */
 module.exports.get = async (req, res) => {
-
+    const { user } = req;
+    return res.status(200).json({ success: true, user });
 }
 
 /**
@@ -19,7 +20,8 @@ module.exports.get = async (req, res) => {
  * @returns 
  */
 module.exports.getAll = async (req, res) => {
-
+    const users = await UserModel.find();
+    return res.status(200).json({ success: true, users });
 }
 
 /**
@@ -38,6 +40,9 @@ module.exports.update = async (req, res) => {
  * @param {Express.Response} res 
  * @returns 
  */
-module.exports.delete = async (req, res) => {
-
+module.exports.remove = async (req, res) => {
+    const { self, user } = req;
+    user.remove();
+    console.log(`[UTILISATEUR] Compte de ${user.username} supprimé par ${self.username}`);
+    res.status(200).json({ success: true, message: "L'utilisateur a été supprimé avec succès", user });
 }

@@ -1,6 +1,8 @@
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
+const roles = require('../roles.json')
+
 const mongoose = require("mongoose");
 
 // à modifier rajouter des vérifs
@@ -9,13 +11,16 @@ const userSchema = new mongoose.Schema(
         username: String,
         email: String,
         password: String,
-        role: String
+        role: {
+            type: String,
+            default: roles[0].name
+        }
     }
 );
 
 // Avant de sauvegarder l'utilisateur
 userSchema.pre('save', function (next) {
-    const { password } = this;
+    const user = this;
 
     // Si le mot de passe n'est pas modifier
     if (!user.isModified('password')) return next();
@@ -34,11 +39,9 @@ userSchema.pre('save', function (next) {
 });
 
 // Comparer les mots de passes
-userSchema.methods.verify = function (password) {
-    bcrypt.compare(password, this.password, function (err, isMatch) {
-        if (err) return false;
-        return isMatch;
-    });
+userSchema.statics.verifyPassword = async function (user, password) {
+    const isMatch = bcrypt.compare(password, user.password);
+    return isMatch;
 };
 
 const UserModel = mongoose.model("User", userSchema, "users");
