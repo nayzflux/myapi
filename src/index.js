@@ -15,7 +15,7 @@ const app = express();
 const server = http.createServer(app);
 
 
-// app.use(cors({origin: '*'}));
+app.use(cors({origin: 'http://localhost:3000', credentials: true}));
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
