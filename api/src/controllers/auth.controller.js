@@ -24,8 +24,8 @@ module.exports.register = async (req, res) => {
     if (!isValidUsername(username)) return res.status(400).json({ success: false, message: "Seul les lettres, les chiffres, le ., le - et le _ sont acceptés dans le nom d'utilisateur" });
 
     // Si l'email ou le om d'utilisateur est déjà utilisé
-    const doesUsernameAlreadyUsed = await UserModel.exists({ username });
-    const doesEmailAlreadyUsed = await UserModel.exists({ username });
+    const doesUsernameAlreadyUsed = await UserModel.exists({ username: { $eq: username } });
+    const doesEmailAlreadyUsed = await UserModel.exists({ email: { $eq: email } });
     if (doesUsernameAlreadyUsed) return res.status(400).json({ success: false, message: "Ce nom d'utilisateur est déjà utilisé" });
     if (doesEmailAlreadyUsed) return res.status(400).json({ success: false, message: "Cette email est déjà utilisée" });
 
