@@ -8,13 +8,17 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const http = require('http');
 const cors = require('cors');
+const rateLimit = require('express-rate-limit');
 
 const routes = require('./routes');
 
 const app = express();
 const server = http.createServer(app);
 
-
+app.use(rateLimit({
+    windoMs: 15 * 60 * 1000,
+    max: 100
+}))
 app.use(cors({origin: 'http://localhost:3000', credentials: true}));
 app.use(cookieParser());
 app.use(bodyParser.json());
