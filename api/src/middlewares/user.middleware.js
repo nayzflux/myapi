@@ -17,7 +17,7 @@ module.exports.handleUser = async (req, res, next) => {
     }
 
     // Récupérer l'utilisateur par son id, son email ou son nom d'utilisateur
-    const user = await UserModel.findOne({ $or: [{ _id: query }, { email: query }, { username: query }] })
+    const user = await UserModel.findOne({ $or: [{ _id: query }, { email: { $eq: login } }, { username: { $eq: login } }] })
         .select(restricted ? '-password -email' : '-password'); // gérer les données afficher en fonction de l'autorisation
 
     // Si l'utilisateur n'existe pas

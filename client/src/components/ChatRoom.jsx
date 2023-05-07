@@ -3,12 +3,14 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useRecoilState } from 'recoil';
 import { io } from 'socket.io-client';
+import Message from './Message';
 
 const ChatRoom = () => {
     const [self, setSelf] = useRecoilState(userState)
     const [messages, setMessages] = useState([]);
     const [message, setMessage] = useState('');
     const [typingUsers, setTypingUsers] = useState([]);
+    const [onlineUsers, setOnlineUsers] = useState([]);
     const [hasStartTyping, setHasStartTyping] = useState(false);
     // const [socket, setSocket] = useState(null);
 
@@ -67,6 +69,7 @@ const ChatRoom = () => {
                     return prevTypingUsers;
                 }
             }
+
             return [...prevTypingUsers, user]
         });
 
@@ -82,11 +85,39 @@ const ChatRoom = () => {
             setTimeout(() => removeTypingUser(user), 10_000);
         });
 
+        const addOnlineUser = (user) => setOnlineUsers(prev => {
+            if (user.username === self.username) return prev;
+            for (const u of prev) {
+                if (u.username === user.username) {
+                    return prev;
+                }
+            }
+            return [...prev, user]
+        });
+
+        const removeOnlineUser = (user) => {
+            setOnlineUsers((prev) => (
+                prev.filter((u) => u.username !== user.username))
+            );
+        };
+
+        socket.on("user_connection", (user) => {
+            console.log(`${user.username} just joined`);
+            addOnlineUser(user);
+        });
+
+        socket.on("user_disconnection", (user) => {
+            console.log(`${user.username} just quit`);
+            removeOnlineUser(user);
+        });
+
         return () => {
             // turning of socket listner on unmount
             socket.off('message_create', addMessage);
             // turning of socket listner on unmount
             socket.off('typing', addTypingUser);
+            socket.off('user_connection', addOnlineUser);
+            socket.off('user_disconnection', removeOnlineUser);
         }
     }, []);
 
@@ -139,18 +170,16 @@ const ChatRoom = () => {
     return (
         <div>
             ChatRoom
+            {JSON.stringify(onlineUsers)}
             {messages.map(m => (
-                <div className='py-2 flex flex-col' key={m._id}>
-                    <p>{m.author?.username || m.author}</p>
-                    <p>{m.content}</p>
-                </div>
+                <Message key={m._id} author={m.author} created_at={m.created_at} content={m.content} id={m._id} />
             ))}
             <form className='flex flex-row' onSubmit={handleSubmit}>
                 <input type='text' placeholder='Entrer un message' value={message} onChange={handleTyping} />
                 <input type='submit' />
             </form>
             <div>
-                <p className='animate-bounce font-bold'>{typingUsers.length >= 1 ? typingUsers.map((u, i) => i === (typingUsers.length - 1) ? u.username : u.username + ", ") + " is typing..." : ""}</p>
+                <p className='animate-bounce font-light'>{typingUsers.length >= 1 ? typingUsers.map((u, i) => i === (typingUsers.length - 1) ? u.username : u.username + ", ") + " is typing..." : ""}</p>
             </div>
         </div>
     )

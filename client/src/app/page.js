@@ -20,6 +20,7 @@ export default function Home() {
     ).then(res => {
       console.log("Logged");
       setUser(res.data.user)
+      console.log(res.data.user);
     }).then(err => {
       console.log("Not logged");
     })

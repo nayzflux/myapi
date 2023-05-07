@@ -17,7 +17,7 @@ module.exports.create = async (req, res) => {
     // const score3 = isProfane(content);
     // if (score > 0.7 || (score > 0.3 && (score2 || score3))) return res.status(400).json({ success: false, message: "Merci de ne pas publier des messages contenant des propos innaproprié" });
 
-    const message = await (await MessageModel.create({ author: self._id, content: sanitizeHtml(clean(content)) })).populate("author", "username role");
+    const message = await (await MessageModel.create({ author: self._id, content: sanitizeHtml(clean(content)) })).populate("author", "username role picture");
     onMessageCreate(message)
     return res.status(201).json({ success: true, message: "Message créer avec succès", message });
 }
@@ -25,6 +25,6 @@ module.exports.create = async (req, res) => {
 module.exports.getAll = async (req, res) => {
     const { limit } = req.query;
 
-    const messages = await MessageModel.find({}, {}, { sort: { created_at: -1 }, limit: (parseInt(limit) || 25) }).populate('author', 'username role').exec();
+    const messages = await MessageModel.find({}, {}, { sort: { created_at: 1 }, limit: (parseInt(limit) || 25) }).populate('author', 'username role picture').exec();
     return res.status(200).json({ success: true, messages: "Message récupérer avec succès", messages });
 }

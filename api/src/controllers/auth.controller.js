@@ -57,7 +57,7 @@ module.exports.login = async (req, res) => {
     if (!login || !password) return res.status(400).json({ success: false, message: "Merci de remplir tous les  champs" });
 
     // Obtenir l'utilisateur avec l'adresse email puis avec le nom d'utilisateur
-    const user = await UserModel.findOne({ username: login }) || await UserModel.findOne({ email: login });
+    const user = await UserModel.findOne({ username: { $eq: login } }) || await UserModel.findOne({ email: { $eq: login } });
 
     // Vérifier si l'utilisateur existe
     if (!user) return res.status(404).json({ success: false, message: "Aucun n'utilisateur n'existe avec cette email ou ce nom d'utilisateur" });
