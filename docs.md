@@ -21,9 +21,9 @@ How to login to the api
     "login": "foo@gmail.com",
     "password": "mypass"
 }
-``
+```
 
-``
+```
 "body": {
     "success": true,
     "message": "Connexion à l'utilisateur effectué avec succès",
@@ -33,7 +33,7 @@ How to login to the api
         "username": "foo"
     }
 }
-``
+```
 
 A cookie jwt that contains token has been created on client
 
@@ -49,9 +49,9 @@ How to create an account to the api
     "password": "mypass",
     "confirmPassword": "mypass"
 }
-``
+```
 
-``
+```
 "body": {
     "success": true,
     "message": "Utilisateur créer avec succès",
@@ -61,6 +61,6 @@ How to create an account to the api
         "email": "foo@gmail.com"
     }
 }
-``
+```
 
 A cookie jwt that contains token has been created on client
