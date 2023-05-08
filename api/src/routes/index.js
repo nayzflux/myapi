@@ -1,10 +1,9 @@
 const Router = require('express').Router();
 
 // Mes routes
-const auth = require('./auth.routes');
-const user = require('./user.routes');
-const typing = require('./typing.routes');
-const conversation = require('./conversation.routes');
+const auth = require('./auth/auth.routes');
+const user = require('./users/user.routes');
+const conversation = require('./conversations/conversation.routes');
 
 // Authentication
 Router.use('/auth', auth);
@@ -12,10 +11,7 @@ Router.use('/auth', auth);
 // Utilisateurs
 Router.use('/users', user);
 
-// Typing
-Router.use('/typing', typing);
-
-// Typing
+// Conversations
 Router.use('/conversations', conversation);
 
 module.exports = Router;

@@ -51,25 +51,32 @@ module.exports.createWebsocket = (server) => {
 
     // Quand un utilisateur se connecte
     io.on('connection', (socket) => {
-        console.log("WS: Client connecté");
-        users = [...users, socket.self];
+        // Stocker l'utilisateur et le socket 
+        users.set(socket.id, socket.self._id.toString());
+        // Envoyer la connexion
         this.onConnection(socket.self);
 
-        for (const u of users) {
-            socket.emit("user_connection", { username: u.username });
+        // Envoyer une liste de tout les utilisateurs déjà en ligne
+        for (const user of users.values()) {
+            socket.emit("user_connection", { username: user.username });
         }
 
+        // Quand un utilisateur se déconnecte
         socket.on("disconnect", () => {
-            console.log("WS: Client déconnecté");
-            users = users.filter(u => u !== socket.self);
+            // Supprimer l'utilisateur et le socket 
+            users.set(socket.id, null);
+            // Envoyer la déconnexion
             this.onDisconnection(socket.self);
+            console.log("[WS] Client déconnecté");
         });
+
+        console.log("[WS] Client connecté");
     });
 }
 
 setInterval(() => {
     console.log(users);
-}, 10_000)
+}, 10_000);
 
 module.exports.onMessageCreate = (message) => {
     io.emit('message_create', message)
@@ -85,4 +92,20 @@ module.exports.onConnection = (user) => {
 
 module.exports.onDisconnection = (user) => {
     io.emit('user_disconnection', { username: user.username })
+}
+
+// Lorsqu'un message est envoyer
+module.exports.onMessageSend = (message) => {
+    // ID des utilisateur présent dans la conversation
+    const conversationUserIds = message.conversation.users;
+    // console.log(conversationUserIds);
+
+    // Envoyer le message a tous les utilisateurs en ligne de la conv
+    for (const [socketId, userId] of users.entries()) {
+        // Si l'utilisateur fait partit de la conversation
+        if (conversationUserIds.includes(userId)) {
+            // Envoyer le message sur le socket
+            io.to(socketId).emit('message_create', message);
+        }
+    }
 }

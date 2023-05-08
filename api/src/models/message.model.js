@@ -3,8 +3,12 @@ const mongoose = require("mongoose");
 // à modifier rajouter des vérifs
 const messageSchema = new mongoose.Schema(
     {
+        conversation: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Conversation"
+        },
         author: {
-            type: mongoose.Types.ObjectId,
+            type: mongoose.Schema.Types.ObjectId,
             ref: "User"
         },
         content: String,
@@ -16,6 +20,7 @@ const messageSchema = new mongoose.Schema(
 // Avant de sauvegarder le message
 messageSchema.pre('save', function (next) {
     const message = this;
+
     // Si c'est un nouveau document
     if (!message.created_at) {
         // Modifier la date de creation
@@ -24,6 +29,7 @@ messageSchema.pre('save', function (next) {
         // Modifier la date de modification
         message.edited_at = Date.now();
     }
+
     return next();
 });
 
