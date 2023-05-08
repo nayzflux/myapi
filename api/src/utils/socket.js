@@ -57,9 +57,9 @@ module.exports.createWebsocket = (server) => {
         this.onConnection(socket.self);
 
         // Envoyer une liste de tout les utilisateurs déjà en ligne
-        for (const user of users.values()) {
-            socket.emit("user_connection", { username: user.username });
-        }
+        // for (const user of users.values()) {
+        //     socket.emit("user_connection", { username: user.username });
+        // }
 
         // Quand un utilisateur se déconnecte
         socket.on("disconnect", () => {
@@ -82,10 +82,6 @@ module.exports.onMessageCreate = (message) => {
     io.emit('message_create', message)
 }
 
-module.exports.onTyping = (user) => {
-    io.emit('typing', { username: user.username })
-}
-
 module.exports.onConnection = (user) => {
     io.emit('user_connection', { username: user.username })
 }
@@ -94,18 +90,27 @@ module.exports.onDisconnection = (user) => {
     io.emit('user_disconnection', { username: user.username })
 }
 
+// Lorsqu'un utilisateur commence à taper un message
+module.exports.onTyping = (conversation, user) => {
+    this.emitToConversation(conversation, 'typing', user);
+}
+
 // Lorsqu'un message est envoyer
-module.exports.onMessageSend = (message) => {
+module.exports.onMessageSend = (conversation, message) => {
+    this.emitToConversation(conversation, 'message_create', message)
+}
+
+// Emettre sur une conversation
+module.exports.emitToConversation = (conversation, event, data) => {
     // ID des utilisateur présent dans la conversation
-    const conversationUserIds = message.conversation.users;
-    // console.log(conversationUserIds);
+    const conversationUserIds = conversation.users.map(user => user._id);
 
     // Envoyer le message a tous les utilisateurs en ligne de la conv
     for (const [socketId, userId] of users.entries()) {
         // Si l'utilisateur fait partit de la conversation
         if (conversationUserIds.includes(userId)) {
             // Envoyer le message sur le socket
-            io.to(socketId).emit('message_create', message);
+            io.to(socketId).emit(event, data);
         }
     }
 }

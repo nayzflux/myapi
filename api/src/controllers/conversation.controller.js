@@ -33,7 +33,7 @@ module.exports.createConversation = async (req, res) => {
 }
 
 /**
- * 
+ * Quitter une conversation
  * @param {import("express").Request} req 
  * @param {import("express").Response} res 
  */
