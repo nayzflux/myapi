@@ -1,5 +1,5 @@
-### Documentation
-# Welcome to the API document this will explain all endoint with examples
+# Documentation
+**Welcome to the API document this will explain all endoint with examples**
 
 ## Endpoint
 
@@ -9,9 +9,9 @@
 ``/api/v1/conversations/{ID}/messages``
 ``/api/v1/conversations/{ID}/typing``
 
-### Authentication
+## Authentication
 
-# Login
+### Login
 How to login to the api
 
 ``/api/v1/auth/login``
@@ -37,7 +37,7 @@ How to login to the api
 
 A cookie jwt that contains token has been created on client
 
-# Register
+### Register
 How to create an account to the api
 
 ``/api/v1/auth/register``
