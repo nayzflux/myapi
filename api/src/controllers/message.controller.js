@@ -16,7 +16,7 @@ const sanitizeHtml = require("sanitize-html");
  * @param {Response} res 
  * @returns
  */
-module.exports.getAllMessages = async (req, res) => {
+module.exports.readAllMessages = async (req, res) => {
     const conversation = req.conversation;
     const { limit } = req.query;
 
@@ -46,7 +46,7 @@ module.exports.sendMessage = async (req, res) => {
     const message = await (await MessageModel.create({ conversation: conversation._id, author: self._id, content: filteredContent })).populate("author conversation", "-email");
 
     // Envoyer via websocket
-    onMessageSend(message);
+    onMessageSend(conversation, message);
 
     // Envoyer la réponse
     console.log(`Message envoyer dans la conversation ${conversation.name || conversation._id} par ${self.username}`);

@@ -103,7 +103,9 @@ module.exports.onMessageSend = (conversation, message) => {
 // Emettre sur une conversation
 module.exports.emitToConversation = (conversation, event, data) => {
     // ID des utilisateur présent dans la conversation
-    const conversationUserIds = conversation.users.map(user => user._id);
+    const conversationUserIds = conversation.users.map(user => user._id.toString());
+
+    console.log(conversationUserIds);
 
     // Envoyer le message a tous les utilisateurs en ligne de la conv
     for (const [socketId, userId] of users.entries()) {

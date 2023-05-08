@@ -1,6 +1,7 @@
 'use client';
 
 import { userState } from "@/atoms/userAtom"
+import App from "@/components/App";
 import AuthForm from "@/components/AuthForm";
 import ChatRoom from "@/components/ChatRoom";
 import axios from "axios";
@@ -28,7 +29,8 @@ export default function Home() {
 
   return (
     <div>
-      {!user ? <AuthForm /> : <ChatRoom />}
+      Logged as {user?.username}
+      {!user ? <AuthForm /> : <App />}
     </div>
   )
 }

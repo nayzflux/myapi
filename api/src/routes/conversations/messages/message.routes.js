@@ -1,4 +1,4 @@
-const { getAll, sendMessage } = require('../../../controllers/message.controller');
+const { getAll, sendMessage, readAllMessages } = require('../../../controllers/message.controller');
 
 const Router = require('express').Router();
 
@@ -6,6 +6,6 @@ const Router = require('express').Router();
 Router.post('/', sendMessage);
 
 // Récupérer
-// Router.get('/', getAll);
+Router.get('/', readAllMessages);
 
 module.exports = Router;
