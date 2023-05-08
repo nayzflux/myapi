@@ -4,6 +4,7 @@ import { useRecoilState } from 'recoil';
 import { convState } from '@/atoms/convAtom';
 import axios from 'axios';
 import MessageContainer from './MessageContainer';
+import ChatInput from './ChatInput';
 
 const ConversationMenu = () => {
   const [convs, setConvs] = useState([]);
@@ -33,6 +34,7 @@ const ConversationMenu = () => {
       {/* Afficher la conversations actuel */}
       {conv ? 'Currently on : ' + conv.name : ''}
       {conv ? <MessageContainer /> : ''}
+      {conv ? <ChatInput /> : ''}
     </div>
   )
 }

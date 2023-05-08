@@ -28,16 +28,18 @@ const MessageContainer = () => {
 
         const addMessage = (message) => setMessages(prevMessages => [...prevMessages, message]);
 
-        socket.on("message_create", (message) => {
+        const handleNewMessage = (message) => {
             console.log("new message incoming");
             if (message.conversation._id.toString() === conv._id.toString()) {
                 console.log("for this conv");
                 addMessage(message);
             }
-        });
+        }
+
+        socket.on("message_create", handleNewMessage);
 
         return () => {
-            socket.off('message_create', addMessage);
+            socket.off('message_create', handleNewMessage);
         }
     }, [conv]);
 
