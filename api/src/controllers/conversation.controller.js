@@ -33,6 +33,29 @@ module.exports.createConversation = async (req, res) => {
 }
 
 /**
+ * Récupérer les conversations
+ * @param {import("express").Request} req 
+ * @param {import("express").Response} res 
+ */
+module.exports.readAllConversations = async (req, res) => {
+    const self = req.self;
+
+    // Récupérer les conversations
+    const conversations = await Conversation.find({ users: self._id }).populate("users", "-email");
+    return res.status(200).json({ success: true, messages: "Conversations récupérer avec succès", conversations });
+}
+
+/**
+ * Récupérer la conversation
+ * @param {import("express").Request} req 
+ * @param {import("express").Response} res 
+ */
+module.exports.readConversation = async (req, res) => {
+    const conversation = req.conversation;
+    return res.status(200).json({ success: true, messages: "Conversation récupérer avec succès", conversation });
+}
+
+/**
  * Quitter une conversation
  * @param {import("express").Request} req 
  * @param {import("express").Response} res 
