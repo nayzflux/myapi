@@ -15,13 +15,10 @@ const routes = require('./routes');
 const app = express();
 const server = http.createServer(app);
 
-app.use(rateLimit({
-    windoMs: 15 * 60 * 1000,
-    max: 100
-}))
-app.use(cors({origin: 'http://localhost:3000', credentials: true}));
+app.use(rateLimit({ windoMs: 15 * 60 * 1000, max: 100 }));
+app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 app.use(cookieParser());
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: '100mb' }));
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use('/api/v1', routes);

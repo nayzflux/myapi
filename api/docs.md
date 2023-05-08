@@ -41,3 +41,39 @@ Response 200:
         "username": "foo"
     }
 }
+
+### Endpoint
+
+``/api/v1/auth``
+``/api/v1/users``
+``/api/v1/conversations``
+``/api/v1/conversations/{ID}/messages``
+``/api/v1/conversations/{ID}/typing``
+
+### Authentication
+
+# Login
+How to login to the api
+
+``/api/v1/auth/login``
+
+````
+"body": {
+    "login": "foo@gmail.com",
+    "password": "mypass"
+}
+```
+
+```
+"body": {
+    "success": true,
+    "message": "Connexion à l'utilisateur effectué avec succès",
+    "user": {
+        "_id": "644812422bcce408718b440d",
+        "email": "foo@gmail.com",
+        "username": "foo"
+    }
+}
+```
+
+A cookie jwt that contains token has been created on client

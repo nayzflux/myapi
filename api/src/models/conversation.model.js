@@ -4,7 +4,8 @@ const mongoose = require("mongoose");
 const conversationSchema = new mongoose.Schema(
     {
         name: {
-            type: String
+            type: String,
+            required: true
         },
         users: [{
             type: mongoose.Schema.Types.ObjectId,
@@ -19,11 +20,6 @@ const conversationSchema = new mongoose.Schema(
 conversationSchema.pre('save', function (next) {
     const conversation = this;
 
-    // Si il n'y a pas de nom
-    if (!conversation.name) {
-        conversation.name = "Nouvelle conversation"
-    }
-
     // Si c'est un nouveau document
     if (!conversation.created_at) {
         // Modifier la date de creation
@@ -35,6 +31,6 @@ conversationSchema.pre('save', function (next) {
     return next();
 });
 
-const MessageModel = mongoose.model("Message", messageSchema, "messages");
+const Conversation = mongoose.model("Conversation", conversationSchema, "conversatons");
 
-module.exports = MessageModel;
+module.exports = Conversation;

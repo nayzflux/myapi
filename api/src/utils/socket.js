@@ -4,7 +4,7 @@ const UserModel = require('../models/user.model')
 
 let io;
 
-let users = [];
+let users = new Map(); // Non oppérationnel  pour scale
 
 function getCookie(cookie, cName) {
     const name = cName + "=";

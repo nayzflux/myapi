@@ -1,0 +1,20 @@
+Utilisateur
+    Read:
+        - his profile
+        - other profile (email hidded)
+    Update:
+        - his profile
+    Delete:
+        - his profile
+
+Admin
+    Read:
+        - his profile
+        - other profile
+        - all profiles
+    Update:
+        - his profile
+        - other profile
+    Delete:
+        - his profile
+        - other profile
