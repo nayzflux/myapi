@@ -10,5 +10,5 @@ module.exports.typing = async (req, res) => {
     const conversation = req.conversation;
 
     onTyping(self, conversation);
-    res.status(200).json({ success: true, message: "Vous avez commencé à taper un messages" });
+    res.status(200).json({ success: true, message: `Vous avez commencé à taper un messages dans ${conversation.name}` });
 }

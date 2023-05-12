@@ -2,6 +2,7 @@ const sanitizeHtml = require("sanitize-html");
 const UserModel = require("../models/user.model");
 const Conversation = require("../models/conversation.model");
 const { default: mongoose, isValidObjectId } = require("mongoose");
+const { onConversationCreate } = require("../utils/socket");
 
 /**
  * 
@@ -29,6 +30,7 @@ module.exports.createConversation = async (req, res) => {
 
     console.log("Conversation créer");
 
+    onConversationCreate(conversation);
     return res.status(201).json({ success: true, messages: "Conversation créer avec succès", conversation });
 }
 
@@ -84,5 +86,6 @@ module.exports.leaveConversation = async (req, res) => {
         return res.status(200).json({ success: true, deleted: true, messages: "Conversation quitter avec succès, la conversation a été supprimé", conversation });
     }
 
+    onConversationLeave(conversation, self);
     return res.status(200).json({ success: true, deleted: false, messages: "Conversation quitter avec succès", conversation });
 }

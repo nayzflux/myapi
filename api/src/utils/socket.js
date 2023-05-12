@@ -87,7 +87,7 @@ module.exports.onConnection = (user) => {
 }
 
 module.exports.onDisconnection = (user) => {
-    io.emit('user_disconnection', { username: user.username })
+    io.emit('user_disconnection', { _id: user._id, username: user.username })
 }
 
 // Lorsqu'un utilisateur commence à taper un message
@@ -98,6 +98,16 @@ module.exports.onTyping = (conversation, user) => {
 // Lorsqu'un message est envoyer
 module.exports.onMessageSend = (conversation, message) => {
     this.emitToConversation(conversation, 'message_create', message)
+}
+
+// Lorsqu'une conversation est créer
+module.exports.onConversationCreate = (conversation) => {
+    this.emitToConversation(conversation, 'conversation_create', conversation)
+}
+
+// Lorsqu'une conversation est quitter
+module.exports.onConversationLeave = (conversation, user) => {
+    this.emitToConversation(conversation, 'conversation_leave', { _id: user._id, username: user.username })
 }
 
 // Emettre sur une conversation
