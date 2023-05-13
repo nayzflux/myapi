@@ -28,11 +28,11 @@ jobs:
               with:
                 push: true
                 tags: nayzbysodium/chatapp-api:latest
-                context: ./api
+                file: ./api/Dockerfile
             -
                 name: Build and push CLIENT
                 uses: docker/build-push-action@v4
                 with:
                     push: true
                     tags: nayzbysodium/chatapp-client:latest
-                    contex: ./client
+                    file: ./client/Dockerfile
