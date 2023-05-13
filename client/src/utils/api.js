@@ -1,9 +1,6 @@
 import axios from "axios";
 
-const PROTOCOL = 'http';
-const HOST = 'localhost';
-const PORT = '80'
-const BASE_URL = PROTOCOL + '://' + HOST + ':' + PORT + '/api/v1';
+const BASE_URL = process.env.BASE_URL;
 
 /**
  * Obtenir les conversations
