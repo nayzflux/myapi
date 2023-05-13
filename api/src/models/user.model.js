@@ -36,14 +36,14 @@ const userSchema = new mongoose.Schema(
         }],
         // All users friends requests
         friendsRequest: {
-            sent: {
+            sent: [{
                 type: mongoose.Schema.Types.ObjectId,
                 ref: "User"
-            },
-            received: {
+            }],
+            received: [{
                 type: mongoose.Schema.Types.ObjectId,
                 ref: "User"
-            }
+            }]
         },
         // User role
         role: {

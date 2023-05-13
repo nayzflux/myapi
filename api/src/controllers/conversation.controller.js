@@ -2,7 +2,7 @@ const sanitizeHtml = require("sanitize-html");
 const UserModel = require("../models/user.model");
 const Conversation = require("../models/conversation.model");
 const { default: mongoose, isValidObjectId } = require("mongoose");
-const { onConversationCreate } = require("../utils/socket");
+const { onConversationCreate, onConversationLeave } = require("../utils/socket");
 
 /**
  * 
@@ -23,7 +23,16 @@ module.exports.createConversation = async (req, res) => {
     // Récupérer les users
     const fetchUsers = await UserModel.find({ '_id': { $in: users } });
 
-    if (users?.length !== fetchUsers?.length) return res.status(400).json({ success: false, message: "Certains utilisateurs spécifié n'existe pas" });
+    // Si certain utilisateur n'existe pas
+    if (users?.length !== fetchUsers?.length) return res.status(404).json({ success: false, message: "Certains utilisateurs spécifié n'existe pas" });
+
+    // Vérifier que les joueurs ajoutées à la conversation sont des amis
+    for (const user of fetchUsers) {
+        console.log(user.friends);
+        if (!user.friends.includes(self._id)) {
+            return res.status(403).json({ success: false, message: `Vous n'êtes pas ami avec ${user.username}` });
+        }
+    }
 
     // Si il n'y a pas de nom le nom sera celui des participants
     const conversation = await (await Conversation.create({ name: (sanitizeHtml(name) || null), users: [...users, self._id.toString()] })).populate("users", "-email");

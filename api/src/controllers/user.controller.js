@@ -48,25 +48,45 @@ module.exports.remove = async (req, res) => {
     res.status(200).json({ success: true, message: "L'utilisateur a été supprimé avec succès", user });
 }
 
-module.exports.addFriends = async (req, res) => {
+module.exports.addFriend = async (req, res) => {
     const { self, user } = req;
-    const { users } = req.body;
+    const { user: target } = req.body;
+    console.log(target);
 
-    // Si certains champs sont vides
-    if (!users || users?.length === 0) return res.status(400).json({ success: false, message: "Merci de spécifié au moins un utilisateur" });
+    // Si il n'y a pas l'ID de la cible
+    if (!target) return res.status(400).json({ success: false, message: "Merci de précisé l'utilisateur à qui vous souhaitez envoyé une demande d'ami" });
 
-    for (const id of users) {
-        if (!isValidObjectId(id)) return res.status(400).json({ success: false, message: `${id} n'est pas un ID valide` });
+    // Si l'ID de la cible n'est pas valide
+    if (!isValidObjectId(target)) return res.status(400).json({ success: false, message: `${id} n'est pas un ID valide` });
+
+    // Récupérer la cible
+    const fetchTarget = await UserModel.findOne({ _id: target });
+
+    // Si la cible n'existe pas
+    if (!fetchTarget) return res.status(404).json({ success: false, message: "L'utilisateur est introuvable" });
+
+    // Si la cible et l'utilisateur sont déjà ami
+    if (fetchTarget.friends?.includes(self._id)) {
+        return res.status(400).json({ success: false, message: `Vous êtes déjà ami avec ${fetchTarget.username}` });
     }
 
-    // Récupérer les users
-    const fetchUsers = await UserModel.find({ '_id': { $in: users } });
+    // Si l'utilisateur avons déjà envoyé une demande d'ami à la cible
+    if (fetchTarget.friendsRequest?.received?.includes(user._id)) {
+        return res.status(400).json({ success: false, message: `Vous avez déjà envoyé une demande d'ami à ${fetchTarget.username}`, });
+    }
 
-    if (users?.length !== fetchUsers?.length) return res.status(404).json({ success: false, message: "Certains utilisateurs spécifié sont introuvable" });
+    // Si la cible a déjà envoyé une demande d'ami à l'utilisateur
+    if (fetchTarget.friendsRequest?.sent?.includes(user._id)) {
+        // Ajouter la cible à l'utilisateur
+        await UserModel.findOneAndUpdate({ _id: user._id }, { $addToSet: { "friends": fetchTarget._id } }, { new: true });
+        // Ajouter lal'utilissateur à la cible
+        await UserModel.findOneAndUpdate({ _id: fetchTarget._id }, { $addToSet: { "friends": user._id } }, { new: true });
+        return res.status(200).json({ success: true, message: `Vous êtes désormais ami avec ${fetchTarget.username}`, });
+    }
 
-    const newUser = await UserModel.findOneAndUpdate({ _id: user._id }, { $addToSet: { "friendsRequest.sent": users } }, { new: true }).populate('friendsRequest.sent', '-email').exec();
-
-    UserModel.updateMany({ '_id': { $in: users } }, { $addToSet: { "friendsRequest.received": [user._id] } }, {new: true});
-
-    return res.status(200).json({ success: true, user: newUser });
+    // Envoyer la demande à la cible
+    await UserModel.findOneAndUpdate({ _id: fetchTarget._id }, { $addToSet: { "friendsRequest.received": user._id } }, { new: true });
+    // Enregistrer l'envoie
+    await UserModel.findOneAndUpdate({ _id: user._id }, { $addToSet: { "friendsRequest.sent": user._id } }, { new: true });
+    return res.status(200).json({ success: true, message: `Vous avez envoyé une demande d'ami à ${fetchTarget.username}` });
 }
