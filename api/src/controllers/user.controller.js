@@ -66,7 +66,7 @@ module.exports.addFriends = async (req, res) => {
 
     const newUser = await UserModel.findOneAndUpdate({ _id: user._id }, { $addToSet: { "friendsRequest.sent": users } }, { new: true }).populate('friendsRequest.sent', '-email').exec();
 
-    const ok = await UserModel.updateMany({ '_id': { $in: users } }, { $addToSet: { "friendsRequest.received": [user._id] } }, {new: true});
+    UserModel.updateMany({ '_id': { $in: users } }, { $addToSet: { "friendsRequest.received": [user._id] } }, {new: true});
 
     return res.status(200).json({ success: true, user: newUser });
 }

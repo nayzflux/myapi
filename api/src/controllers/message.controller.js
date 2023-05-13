@@ -3,13 +3,6 @@ const { clean } = require("../utils/moderation");
 const { onMessageSend } = require("../utils/socket");
 const sanitizeHtml = require("sanitize-html");
 
-// module.exports.getAll = async (req, res) => {
-//     const { limit } = req.query;
-
-//     const messages = await MessageModel.find({}, {}, { sort: { created_at: 1 }, limit: (parseInt(limit) || 25) }).populate('author', 'username role picture').exec();
-//     return res.status(200).json({ success: true, messages: "Message récupérer avec succès", messages });
-// }
-
 /**
  * Récupérer les messages d'un conversation
  * @param {Request} req 

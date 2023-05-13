@@ -1,5 +1,9 @@
 // Seulement pour le dév
-require('dotenv').config({ path: '.env' });
+try {
+    require('dotenv').config({ path: '.env' });
+} catch (err) {
+    console.log("Impossible de chargée les variables de développement");
+}
 
 require('./utils/db');
 
@@ -16,7 +20,7 @@ const app = express();
 const server = http.createServer(app);
 
 app.use(rateLimit({ windoMs: 15 * 60 * 1000, max: 50 }));
-app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
+app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
 app.use(cookieParser());
 app.use(bodyParser.json({ limit: '100mb' }));
 app.use(bodyParser.urlencoded({ extended: false }));

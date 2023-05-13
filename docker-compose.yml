@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+  api:
+    image: nayzbysodium/chatapp-api:latest
+    environment:
+      - TZ=Europe/Paris
+      - PORT=80
+      - CLIENT_URL=myurl
+      - JWT_SECRET=secret
+      - JWT_EXPIRES_IN=30d
+      - MONGO_URL=myurl
+    networks:
+      - webgateway
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.chatapp-api.rule=Host(`api.chatapp.nayz.fr`)
+      - traefik.http.routers.chatapp-api.entrypoints=websecure
+      - traefik.http.routers.chatapp-api.service=chatapp-api
+      - traefik.http.services.chatapp-api.loadbalancer.server.port=80
+      - traefik.http.routers.chatapp-api.tls.certresolver=production
+  client:
+    image: nayzbysodium/chatapp-client:latest
+    environment:
+      - TZ=Europe/Paris
+      - API_BASE_URL=myurl
+    networks:
+      - webgateway
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.chatapp-client.rule=Host(`www.chatapp.nayz.fr`)
+      - traefik.http.routers.chatapp-client.entrypoints=websecure
+      - traefik.http.routers.chatapp-client.service=chatapp-client
+      - traefik.http.services.chatapp-client.loadbalancer.server.port=80
+      - traefik.http.routers.chatapp-client.tls.certresolver=production
+
+networks:
+  webgateway:
+    external: true
+    name: webgateway

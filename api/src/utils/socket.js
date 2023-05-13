@@ -78,12 +78,12 @@ setInterval(() => {
     console.log(users);
 }, 10_000);
 
-module.exports.onMessageCreate = (message) => {
-    io.emit('message_create', message)
-}
+// module.exports.onMessageCreate = (message) => {
+//     io.emit('message_create', message)
+// }
 
 module.exports.onConnection = (user) => {
-    io.emit('user_connection', { username: user.username })
+    io.emit('user_connection', { _id: user._id, username: user.username })
 }
 
 module.exports.onDisconnection = (user) => {
@@ -107,7 +107,7 @@ module.exports.onConversationCreate = (conversation) => {
 
 // Lorsqu'une conversation est quitter
 module.exports.onConversationLeave = (conversation, user) => {
-    this.emitToConversation(conversation, 'conversation_leave', { _id: user._id, username: user.username })
+    this.emitToConversation(conversation, 'conversation_leave', ({ _id: user._id, username: user.username }, { _id: user._id, username: user.username }))
 }
 
 // Emettre sur une conversation

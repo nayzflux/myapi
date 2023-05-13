@@ -1,0 +1,28 @@
+name: Dockerize application
+
+on:
+    push:
+        branches: [main]
+    pull_request:
+        branches: [main]
+
+jobs:
+    docker:
+        runs-on: ubuntu-latest
+        steps:
+          - name: Checkout code
+            uses: actions/checkout@v2
+          - name: Build and Publish API
+            uses: docker/build-push-action@v1
+            with:
+                password: ${{ secrets.DOCKER_PASSWORD }}
+                repository: nayzbysodium/chatapp-api
+                tags: latest, ${{ github.run_number }}
+                context: ./api/Dockerfile
+          - name: Build and Publish API
+            uses: docker/build-push-action@v1
+            with:
+                password: ${{ secrets.DOCKER_PASSWORD }}
+                repository: nayzbysodium/chatapp-client
+                tags: latest, ${{ github.run_number }}
+                context: ./client/Dockerfile
