@@ -13,14 +13,14 @@ jobs:
           - name: Checkout code
             uses: actions/checkout@v2
           - name: Build and Publish API
-            uses: docker/build-push-action@v1
+            uses: docker/build-push-action@v2
             with:
                 password: ${{ secrets.DOCKER_PASSWORD }}
                 repository: nayzbysodium/chatapp-api
                 tags: latest, ${{ github.run_number }}
                 context: ./api/Dockerfile
           - name: Build and Publish CLIENT
-            uses: docker/build-push-action@v1
+            uses: docker/build-push-action@v2
             with:
                 password: ${{ secrets.DOCKER_PASSWORD }}
                 repository: nayzbysodium/chatapp-client
