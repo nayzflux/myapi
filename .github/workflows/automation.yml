@@ -19,7 +19,7 @@ jobs:
                 repository: nayzbysodium/chatapp-api
                 tags: latest, ${{ github.run_number }}
                 context: ./api/Dockerfile
-          - name: Build and Publish API
+          - name: Build and Publish CLIENT
             uses: docker/build-push-action@v1
             with:
                 password: ${{ secrets.DOCKER_PASSWORD }}
