@@ -3,7 +3,7 @@ import axios from 'axios';
 import React, { useState } from 'react'
 import { useRecoilState } from 'recoil';
 
-const SignUpModal = () => {
+const RegisterModal = () => {
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
@@ -38,7 +38,8 @@ const SignUpModal = () => {
 
     return (
         <div>
-            SignUpModal
+            <h2>Inscription</h2>
+            <p>Créer vous un compte MyChatApp</p>
             <form onSubmit={handleSubmit} className='flex flex-col space-y-2'>
                 <input type='text' placeholder='Username' value={username} onChange={(e) => setUsername(e.target.value)} />
                 <input type='email' placeholder='Email' value={email} onChange={(e) => setEmail(e.target.value)} />
@@ -51,4 +52,4 @@ const SignUpModal = () => {
     )
 }
 
-export default SignUpModal
+export default RegisterModal

@@ -2,24 +2,16 @@
 
 import React, { useEffect, useState } from 'react'
 import LoginModal from './LoginModal';
-import SignUpModal from './SignUpModal';
+import SignUpModal from './RegisterModal';
+import RegisterModal from './RegisterModal';
+import Link from 'next/link';
 
-const AuthForm = () => {
-    const [modal, setModal] = useState("LOGIN");
-
-    const toogleModal = () => {
-        if (modal === "LOGIN") {
-            setModal("SIGNUP")
-        } else {
-            setModal("LOGIN")
-        }
-    }
-
+const AuthForm = ({ modal }) => {
     return (
         <div>
-            AuthForm
-            {modal === "LOGIN" ? <LoginModal/> : <SignUpModal/>}
-            <a onClick={toogleModal}>{modal === "LOGIN" ? "Vous n'avez pas encore de compte ?" : "Vous avez déjà un compte ?"}</a>
+            Authentification
+            {modal === "LOGIN" ? <LoginModal /> : <RegisterModal />}
+            {modal === "LOGIN" ? <Link href='/account/register'>Vous n'avez pas encore de compte ?</Link> : <Link href='/account/login'>Vous avez déjà un compte ?</Link>}
         </div>
     )
 }

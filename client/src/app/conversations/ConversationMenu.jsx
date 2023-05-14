@@ -5,6 +5,7 @@ import { fetchConversations } from '@/utils/api';
 import React, { useEffect, useState } from 'react'
 import { useRecoilState } from 'recoil';
 import ConversationItem from './ConversationItem';
+import SearchUser from '@/components/SearchUser';
 
 const ConversationMenu = () => {
     const [conversations, setConversations] = useState([]);
@@ -25,12 +26,17 @@ const ConversationMenu = () => {
     }
 
     return (
-        <div className='space-y-2 p-3'>
-            {
-                conversations.map(({_id, name, users}) => (
-                    <ConversationItem key={_id} _id={_id} name={name} users={users}/>
-                ))
-            }
+        <div>
+            {/* Search */}
+            <SearchUser/>
+            {/* Active friends */}
+            <div className='space-y-2 p-3'>
+                {
+                    conversations.map(({ _id, name, users }) => (
+                        <ConversationItem key={_id} _id={_id} name={name} users={users} />
+                    ))
+                }
+            </div>
         </div>
     )
 }

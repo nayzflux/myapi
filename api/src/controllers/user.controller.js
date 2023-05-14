@@ -26,6 +26,23 @@ module.exports.getAll = async (req, res) => {
 }
 
 /**
+ * Récuperer tous les utilisateur
+ * @param {Express.Request} req 
+ * @param {Express.Response} res 
+ * @returns 
+ */
+module.exports.search = async (req, res) => {
+    const { query } = req.params;
+    const { limit } = req.query;
+
+    const users = await UserModel.find({ username: { $regex: "^" + query } })
+        .limit(limit || 25)
+        .exec();
+
+    return res.status(200).json({ success: true, users });
+}
+
+/**
  * Modifier un utilisateur
  * @param {Express.Request} req 
  * @param {Express.Response} res 

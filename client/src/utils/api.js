@@ -76,3 +76,15 @@ export const sendMessage = async (conversationId, content) => {
 
     return response?.data?.message || null;
 }
+
+export const searchUser = async (query) => {
+    console.log("search");
+
+    const response = await axios.request({
+        method: 'GET',
+        url: `${BASE_URL}/users/search/${query}?limit=25`,
+        withCredentials: true
+    });
+
+    return response?.data?.users || null;
+}
