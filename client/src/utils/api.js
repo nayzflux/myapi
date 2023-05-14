@@ -18,6 +18,23 @@ export const fetchUser = async (userId) => {
 /**
  * Obtenir les conversations
  */
+export const fetchConversation = async (conversationId) => {
+    try {
+        const response = await axios.request({
+            method: 'GET',
+            url: `${BASE_URL}/conversations/${conversationId}`,
+            withCredentials: true
+        });
+
+        return response?.data?.conversation || null;
+    } catch (err) {
+        return null;
+    }
+}
+
+/**
+ * Obtenir les conversations
+ */
 export const fetchConversations = async () => {
     const response = await axios.request({
         method: 'GET',
@@ -40,4 +57,22 @@ export const fetchConversationMessages = async (conversationId) => {
     });
 
     return response?.data?.messages || null;
+}
+
+/**
+ * Obtenir les messages d'un conversations
+ * @param {String} conversationId 
+ * @param {String} content 
+ */
+export const sendMessage = async (conversationId, content) => {
+    const response = await axios.request({
+        method: 'POST',
+        url: `${BASE_URL}/conversations/${conversationId}/messages`,
+        data: {
+            content
+        },
+        withCredentials: true
+    });
+
+    return response?.data?.message || null;
 }

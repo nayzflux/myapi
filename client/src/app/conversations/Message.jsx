@@ -5,10 +5,6 @@ import { useRecoilState } from 'recoil'
 const Message = ({ _id, content, author }) => {
     const [user, setUser] = useRecoilState(userState);
 
-    useEffect(() => {
-        console.log(user, author, content);
-    }, [])
-
     return (
         author._id.toString() === user._id.toString() ?
             <div className='flex flex-row ml-auto space-x-2'>
