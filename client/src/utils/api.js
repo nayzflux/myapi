@@ -2,6 +2,33 @@ import axios from "axios";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
+export const login = async (email, password) => {
+    const response = await axios.request({
+        method: 'POST',
+        url: `${BASE_URL}/auth/login`,
+        withCredentials: true,
+        data: {
+            login: email,
+            password: password
+        }
+    });
+
+    return response?.data?.user || null;
+}
+
+export const register = async (username, email, password, passwordConfirm) => {
+    const response = await axios.request({
+        method: 'POST',
+        url: `${BASE_URL}/auth/register`,
+        withCredentials: true,
+        data: {
+            username, email, password, passwordConfirm
+        }
+    });
+
+    return response?.data?.user || null;
+}
+
 /**
  * Obtenir les conversations
  */

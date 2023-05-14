@@ -1,5 +1,5 @@
 import { userState } from '@/atoms/userAtom';
-import axios from 'axios';
+import { register } from '@/utils/api';
 import React, { useState } from 'react'
 import { useRecoilState } from 'recoil';
 
@@ -14,25 +14,9 @@ const RegisterModal = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        axios.request(
-            {
-                url: 'http://localhost:80/api/v1/auth/register',
-                method: 'POST',
-                data: {
-                    password,
-                    email,
-                    username,
-                    confirmPassword
-                },
-                withCredentials: true
-            }
-        ).then(res => {
+        register(username, email, password, confirmPassword).then(user => {
             console.log("sign up");
-            setUser(res.data.user)
-        }).catch(err => {
-            console.log("sign up error");
-            console.log(err);
-            setError(err.response.data.message)
+            setUser(user)
         });
     }
 

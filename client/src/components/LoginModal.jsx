@@ -1,6 +1,7 @@
 'use client';
 
 import { userState } from '@/atoms/userAtom';
+import { login } from '@/utils/api';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useRecoilState } from 'recoil';
@@ -14,22 +15,9 @@ const LoginModal = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        axios.request(
-            {
-                url: 'http://localhost:80/api/v1/auth/login',
-                method: 'POST',
-                data: {
-                    password,
-                    login: email
-                },
-                withCredentials: true
-            }
-        ).then(res => {
-            console.log("auth");
-            setUser(res.data.user)
-        }).catch(err => {
-            console.log(err);
-            setError(err.response.data.message)
+        login(email, password).then(user => {
+            console.log("sign up");
+            setUser(user)
         });
     }
 
