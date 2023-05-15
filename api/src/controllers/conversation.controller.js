@@ -34,6 +34,10 @@ module.exports.createConversation = async (req, res) => {
         }
     }
 
+    // Trouver une conversation avec les memes utilisateurs et envoyée une erreur si elle existe déjà
+    const convAlreadyExists = await Conversation.findOne({ users: { $eq: [...users, self._id] } }).populate('users', '-email').exec();
+    if (convAlreadyExists) return res.status(400).json({ success: false, message: `Une conversation existe déjà avec ${users.length > 1 ? "ces membres" : "ce membre"}`, conversation: convAlreadyExists });
+
     // Si il n'y a pas de nom le nom sera celui des participants
     const conversation = await (await Conversation.create({ name: (sanitizeHtml(name) || null), users: [...users, self._id.toString()] })).populate("users", "-email");
 

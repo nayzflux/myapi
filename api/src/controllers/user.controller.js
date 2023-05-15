@@ -69,6 +69,7 @@ module.exports.addFriend = async (req, res) => {
     const { self, user } = req;
     const { user: target } = req.body;
     console.log(target);
+    console.log(user._id);
 
     // Si il n'y a pas l'ID de la cible
     if (!target) return res.status(400).json({ success: false, message: "Merci de précisé l'utilisateur à qui vous souhaitez envoyé une demande d'ami" });
@@ -104,6 +105,6 @@ module.exports.addFriend = async (req, res) => {
     // Envoyer la demande à la cible
     await UserModel.findOneAndUpdate({ _id: fetchTarget._id }, { $addToSet: { "friendsRequest.received": user._id } }, { new: true });
     // Enregistrer l'envoie
-    await UserModel.findOneAndUpdate({ _id: user._id }, { $addToSet: { "friendsRequest.sent": user._id } }, { new: true });
+    await UserModel.findOneAndUpdate({ _id: user._id }, { $addToSet: { "friendsRequest.sent": fetchTarget._id } }, { new: true });
     return res.status(200).json({ success: true, message: `Vous avez envoyé une demande d'ami à ${fetchTarget.username}` });
 }

@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import debounce from 'lodash.debounce';
-import { searchUser } from '@/utils/api';
+import { searchUser, sendFriendRequest } from '@/utils/api';
+import UserResult from './UserResult';
 
 const SearchUser = () => {
     const [loading, setLoading] = useState(true);
@@ -8,26 +9,16 @@ const SearchUser = () => {
     const [results, setResults] = useState([]);
 
     useEffect(() => {
-        if (input !== '') {
-            debouceSearch(input);
-        } else {
-            setResults([])
-        }
+        debouceSearch(input);
     }, [input]);
 
     const debouceSearch = useCallback(
-        debounce((input) => {
-            searchUser(input).then(users => {
+        debounce((query) => {
+            searchUser(query).then(users => {
                 setResults(users);
             })
-            console.log('search', input); 
         }, 1000), []
     );
-
-    const handleFriendRequest = (e) => {
-        e.preventDefault();
-        
-    }
 
     return (
         <div className=''>
@@ -35,10 +26,7 @@ const SearchUser = () => {
             {/* Resultat de la recherche */}
             <div>
                 {results?.map(user => (
-                    <div key={user._id}>
-                        <p>{user.username}</p>
-                        <button onClick={handleFriendRequest}>Demander en ami</button>
-                    </div>
+                    <UserResult key={user._id} user={user} />
                 ))}
             </div>
         </div>

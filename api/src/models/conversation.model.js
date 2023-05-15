@@ -5,7 +5,7 @@ const conversationSchema = new mongoose.Schema(
     {
         name: {
             type: String,
-            required: true
+            default: null
         },
         users: [{
             type: mongoose.Schema.Types.ObjectId,

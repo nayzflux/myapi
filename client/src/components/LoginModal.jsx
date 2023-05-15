@@ -3,6 +3,7 @@
 import { userState } from '@/atoms/userAtom';
 import { login } from '@/utils/api';
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 import { useRecoilState } from 'recoil';
 
@@ -11,13 +12,17 @@ const LoginModal = () => {
     const [email, setEmail] = useState('');
     const [error, setError] = useState('');
     const [user, setUser] = useRecoilState(userState);
+    const router = useRouter()
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
         login(email, password).then(user => {
-            console.log("sign up");
+            console.log("Sign In success");
             setUser(user)
+            router.push('/conversations')
+        }).catch(err => {
+            setError('Une erreur est survenue')
         });
     }
 

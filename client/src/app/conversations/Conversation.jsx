@@ -5,10 +5,14 @@ import React, { useEffect, useState } from 'react'
 import Message from './Message';
 import Link from 'next/link';
 import { socket } from '@/utils/socket';
+import { useRecoilState } from 'recoil';
+import { userState } from '@/atoms/userAtom';
+import { getConversationDisplayName } from '@/utils/format';
 
 const Conversation = ({ _id, name, users }) => {
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState([]);
+  const [user, setUser] = useRecoilState(userState);
 
   useEffect(() => {
     console.log("Fetching messages");
@@ -18,7 +22,7 @@ const Conversation = ({ _id, name, users }) => {
 
     socket.on('message_create', addMessages)
 
-    return(() => {
+    return (() => {
       socket.off('message_create', addMessages);
     });
   }, []);
@@ -58,7 +62,7 @@ const Conversation = ({ _id, name, users }) => {
           <img alt='profile picture' className='w-8 h-8 rounded-full' src='https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png' />
           <div className='flex flex-col'>
             {/* Name */}
-            <p className='text-xs font-bold'>{name}</p>
+            <p className='text-xs font-bold'>{getConversationDisplayName({ _id, name, users }, user)}</p>
             {/* User list */}
             <p className='text-sm text-gray-400'>{users.map((u, i) => i === (users.length - 1) ? u.username : `${u.username}, `)}</p>
           </div>

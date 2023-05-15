@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react'
 import { useRecoilState } from 'recoil';
 import ConversationItem from './ConversationItem';
 import SearchUser from '@/components/SearchUser';
+import { socket } from '@/utils/socket';
 
 const ConversationMenu = () => {
     const [conversations, setConversations] = useState([]);
@@ -15,20 +16,28 @@ const ConversationMenu = () => {
         fetchConversations().then((conversations) => {
             setConversations(conversations);
         });
+
+        socket.connect();
+
+        socket.on('conversation_create', addConversation);
+
+        return (() => {
+            socket.off('conversation_create', addConversation);
+        });
     }, []);
 
-    const addConversation = (message) => {
-        setMessages(old => [...old, message]);
+    const addConversation = (conversation) => {
+        setConversations(old => [...old, conversation]);
     }
 
-    const removeConversation = (message) => {
-        setMessages(old => old.filter(m => m !== message));
+    const removeConversation = (conversation) => {
+        setConversations(old => old.filter(c => c !== conversation));
     }
 
     return (
         <div>
             {/* Search */}
-            <SearchUser/>
+            <SearchUser />
             {/* Active friends */}
             <div className='space-y-2 p-3'>
                 {

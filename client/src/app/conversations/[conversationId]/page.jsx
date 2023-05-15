@@ -9,14 +9,21 @@ import Conversation from '@/app/conversations/Conversation';
 import { userState } from '@/atoms/userAtom';
 import { useRecoilState } from 'recoil';
 import { socket } from '@/utils/socket';
+import { useRouter } from 'next/navigation';
 
 const ConversationPage = ({ params }) => {
   const [conversation, setConversation] = useState(null);
   const [user, setUser] = useRecoilState(userState);
+  const router = useRouter();
 
   useEffect(() => {
     fetchUser('@me').then((user) => {
       setUser(user);
+    }).catch((err) => {
+      // Not logged In
+      if (!user) {
+        router.push('/account/login');
+      }
     });
 
     // Connect to Socket

@@ -1,6 +1,19 @@
 import axios from "axios";
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "https://api.chatapp.nayz.fr/api/v1";
+
+export const sendFriendRequest = async (userId) => {
+    const response = await axios.request({
+        method: 'POST',
+        url: `${BASE_URL}/users/@me/friends`,
+        withCredentials: true,
+        data: {
+            user: userId
+        }
+    });
+
+    return null;
+}
 
 export const login = async (email, password) => {
     const response = await axios.request({
@@ -40,6 +53,27 @@ export const fetchUser = async (userId) => {
     });
 
     return response?.data?.user || null;
+}
+
+/**
+ * Créer une conversation
+ */
+export const createConversation = async (users, name) => {
+    try {
+        const response = await axios.request({
+            method: 'POST',
+            url: `${BASE_URL}/conversations`,
+            withCredentials: true,
+            data: {
+                name,
+                users
+            }
+        });
+
+        return response.data?.conversation || null;
+    } catch (err) {
+        return err.response.data?.conversation || null;
+    }
 }
 
 /**
@@ -106,6 +140,8 @@ export const sendMessage = async (conversationId, content) => {
 
 export const searchUser = async (query) => {
     console.log("search");
+
+    if (query === '') return [];
 
     const response = await axios.request({
         method: 'GET',

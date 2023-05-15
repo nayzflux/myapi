@@ -15,8 +15,11 @@ const RegisterModal = () => {
         e.preventDefault();
 
         register(username, email, password, confirmPassword).then(user => {
-            console.log("sign up");
+            console.log("Sign Up success");
             setUser(user)
+            router.push('/conversations')
+        }).catch(err => {
+            setError('Une erreur est survenue')
         });
     }
 
