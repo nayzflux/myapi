@@ -29,13 +29,13 @@ export const login = async (email, password) => {
     return response?.data?.user || null;
 }
 
-export const register = async (username, email, password, passwordConfirm) => {
+export const register = async (username, email, password, confirmPassword) => {
     const response = await axios.request({
         method: 'POST',
         url: `${BASE_URL}/auth/register`,
         withCredentials: true,
         data: {
-            username, email, password, passwordConfirm
+            username, email, password, confirmPassword
         }
     });
 

@@ -7,7 +7,7 @@ export default function Home() {
     <div>
       <div>
         <p>Bienvenue sur ChatApp clique ici pour commencer à discuter</p>
-        <Link href='/conversation'>Voir les conversations</Link>
+        <Link href='/conversations'>Voir les conversations</Link>
       </div>
     </div>
   )
