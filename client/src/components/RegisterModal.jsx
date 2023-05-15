@@ -1,5 +1,6 @@
 import { userState } from '@/atoms/userAtom';
 import { register } from '@/utils/api';
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'
 import { useRecoilState } from 'recoil';
 
@@ -10,17 +11,19 @@ const RegisterModal = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
     const [user, setUser] = useRecoilState(userState);
+    const router = useRouter();
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        register(username, email, password, confirmPassword).then(user => {
-            console.log("Sign Up success");
-            setUser(user)
-            router.push('/conversations')
-        }).catch(err => {
-            setError('Une erreur est survenue')
-        });
+        register(username, email, password, confirmPassword)
+            .then(user => {
+                console.log("Sign Up success");
+                setUser(user)
+                router.push('/conversations')
+            }).catch(err => {
+                setError('Une erreur est survenue')
+            });
     }
 
     return (
