@@ -38,7 +38,7 @@ module.exports.register = async (req, res) => {
     console.log("[AUTH] Utilisateur créé");
 
     // à vérifier pour la sécurité des cookie
-    res.cookie('jwt', token, { httpOnly: true, secure: process.env.JWT_SECURE_COOKIE });
+    res.cookie('jwt', token, { httpOnly: true, maxAge: 30 * 24 * 60 * 60 * 1000 });
     return res.status(201).json({ success: true, message: "Utilisateur créer avec succès", user: { _id: user._id, username: user.username, email: user.email, role: user.role } });
 }
 
@@ -72,7 +72,7 @@ module.exports.login = async (req, res) => {
     console.log("[AUTH] Utilisateur connecté");
 
     // à vérifier pour la sécurité des cookie
-    res.cookie('jwt', token, { httpOnly: true, secure: false });
+    res.cookie('jwt', token, { httpOnly: true, maxAge: 30 * 24 * 60 * 60 * 1000 });
     return res.status(200).json({ success: true, message: `Connexion à l'utilisateur effectué avec succès`, user: { _id: user._id, email: user.email, username: user.username, role: user.role } });
 }
 
