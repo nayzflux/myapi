@@ -5,7 +5,7 @@ const { default: mongoose, isValidObjectId } = require("mongoose");
 const { onConversationCreate, onConversationLeave } = require("../utils/socket");
 
 /**
- * 
+ * Gérer la création d'un conversation
  * @param {import("express").Request} req 
  * @param {import("express").Response} res 
  */
@@ -35,11 +35,11 @@ module.exports.createConversation = async (req, res) => {
     }
 
     // Trouver une conversation avec les memes utilisateurs et envoyée une erreur si elle existe déjà
-    const convAlreadyExists = await Conversation.findOne({ users: { $eq: [...users, self._id] } }).populate('users', '-email').exec();
+    const convAlreadyExists = await Conversation.findOne({ users: { $eq: [...users, self._id] } }).populate('users').exec();
     if (convAlreadyExists) return res.status(400).json({ success: false, message: `Une conversation existe déjà avec ${users.length > 1 ? "ces membres" : "ce membre"}`, conversation: convAlreadyExists });
 
     // Si il n'y a pas de nom le nom sera celui des participants
-    const conversation = await (await Conversation.create({ name: (sanitizeHtml(name) || null), users: [...users, self._id.toString()] })).populate("users", "-email");
+    const conversation = await (await Conversation.create({ name: (sanitizeHtml(name) || null), users: [...users, self._id.toString()] })).populate("users");
 
     console.log("Conversation créer");
 
@@ -55,8 +55,8 @@ module.exports.createConversation = async (req, res) => {
 module.exports.readAllConversations = async (req, res) => {
     const self = req.self;
 
-    // Récupérer les conversations
-    const conversations = await Conversation.find({ users: self._id }).populate("users", "-email");
+    // Récupérer les conversations de l'utilisateur connecté
+    const conversations = await Conversation.find({ users: self._id }).populate("users");
     return res.status(200).json({ success: true, messages: "Conversations récupérer avec succès", conversations });
 }
 
@@ -85,7 +85,7 @@ module.exports.leaveConversation = async (req, res) => {
     if (!isValidObjectId(conversationId)) return res.status(400).json({ success: false, message: `${conversationId} n'est pas un ID valide` });
 
     // Récupérer les users
-    const conversation = await Conversation.findOne({ _id: conversationId, users: self._id.toString() }).populate("users", "-email");
+    const conversation = await Conversation.findOne({ _id: conversationId, users: self._id.toString() }).populate("users");
 
     if (!conversation) return res.status(400).json({ success: false, message: "Cette conversation n'existe pas ou alors l'utilisateur n'a pas accès a cette discussion" });
 
@@ -99,6 +99,7 @@ module.exports.leaveConversation = async (req, res) => {
         return res.status(200).json({ success: true, deleted: true, messages: "Conversation quitter avec succès, la conversation a été supprimé", conversation });
     }
 
+    // Envoyer un event sur le WebSocket
     onConversationLeave(conversation, self);
     return res.status(200).json({ success: true, deleted: false, messages: "Conversation quitter avec succès", conversation });
 }

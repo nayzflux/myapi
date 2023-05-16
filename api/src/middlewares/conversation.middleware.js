@@ -17,7 +17,7 @@ module.exports.resolveConversation = async (req, res, next) => {
     if (!isValidObjectId(conversationId)) return res.status(400).json({ success: false, message: `${conversationId} n'est pas un ID valide` });
 
     // Récupérer la conversation si elle existe
-    const conversation = await Conversation.findOne({ _id: conversationId }).populate("users", "-email").exec();
+    const conversation = await Conversation.findOne({ _id: conversationId }).populate("users").exec();
 
     // Si elle n'existe pas
     if (!conversation) return res.status(404).json({ success: false, message: "Cette conversation est introuvable" });

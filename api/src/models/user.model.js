@@ -16,7 +16,8 @@ const userSchema = new mongoose.Schema(
         email: {
             type: String,
             unique: true,
-            required: true
+            required: true,
+            select: false
         },
         password: {
             type: String,
@@ -49,6 +50,10 @@ const userSchema = new mongoose.Schema(
         role: {
             type: String,
             default: roles[0].name
+        },
+        isOnline: {
+            type: Boolean,
+            default: false
         }
     }
 );

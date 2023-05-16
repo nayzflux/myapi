@@ -1,5 +1,5 @@
 import { userState } from '@/atoms/userAtom';
-import { createConversation } from '@/utils/api';
+import { createConversation, fetchUser } from '@/utils/api';
 import { socket } from '@/utils/socket';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
@@ -7,10 +7,12 @@ import { useRecoilState } from 'recoil';
 
 const ActiveFriends = () => {
     const [onlines, setOnline] = useState([]);
-    // const [user, setUser] = useRecoilState(userState);
+    const [user, setUser] = useRecoilState(userState);
     const router = useRouter();
 
     useEffect(() => {
+        setOnline(user.friends?.filter(u => u.isOnline === true))
+
         socket.connect();
 
         socket.on('user_connection', addOnline);

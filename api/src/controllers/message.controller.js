@@ -14,7 +14,7 @@ module.exports.readAllMessages = async (req, res) => {
     const { limit } = req.query;
 
     // Récupérer les messages de la conversation triée et limité
-    const messages = await MessageModel.find({ conversation: conversation._id }, {}).sort({ created_at: -1 }).limit(parseInt(limit) || 25).populate('author conversation', '-password -email').exec();
+    const messages = await MessageModel.find({ conversation: conversation._id }, {}).sort({ created_at: -1 }).limit(parseInt(limit) || 25).populate('author conversation').exec();
     return res.status(200).json({ success: true, message: "Message récupérer avec succès", messages: messages.reverse() });
 }
 
@@ -36,7 +36,7 @@ module.exports.sendMessage = async (req, res) => {
     const filteredContent = sanitizeHtml(clean(content));
 
     // Créer le message dans la DB
-    const message = await (await MessageModel.create({ conversation: conversation._id, author: self._id, content: filteredContent })).populate("author conversation", "-email");
+    const message = await (await MessageModel.create({ conversation: conversation._id, author: self._id, content: filteredContent })).populate("author conversation");
 
     // Envoyer via websocket
     onMessageSend(conversation, message);

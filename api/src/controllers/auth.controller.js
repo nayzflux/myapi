@@ -37,7 +37,7 @@ module.exports.register = async (req, res) => {
 
     console.log("[AUTH] Utilisateur créé");
 
-    // à vérifier pour la sécurité des cookie
+    // Renvoyer la réponse et créer un cookie sur le client
     res.cookie('jwt', token, { httpOnly: true, maxAge: 30 * 24 * 60 * 60 * 1000 });
     return res.status(201).json({ success: true, message: "Utilisateur créer avec succès", user: { _id: user._id, username: user.username, email: user.email, role: user.role } });
 }
@@ -57,7 +57,7 @@ module.exports.login = async (req, res) => {
     if (!login || !password) return res.status(400).json({ success: false, message: "Merci de remplir tous les  champs" });
 
     // Obtenir l'utilisateur avec l'adresse email puis avec le nom d'utilisateur
-    const user = await UserModel.findOne({ username: { $eq: login } }).select("+password") || await UserModel.findOne({ email: { $eq: login } }).select("+password"); // selectionner le mot de passe
+    const user = await UserModel.findOne({ username: { $eq: login } }).select("+password +email") || await UserModel.findOne({ email: { $eq: login } }).select("+password +email"); // selectionner le mot de passe et l'adresse email
 
     // Vérifier si l'utilisateur existe
     if (!user) return res.status(404).json({ success: false, message: "Aucun n'utilisateur n'existe avec cette email ou ce nom d'utilisateur" });
@@ -71,7 +71,7 @@ module.exports.login = async (req, res) => {
 
     console.log("[AUTH] Utilisateur connecté");
 
-    // à vérifier pour la sécurité des cookie
+    // Renvoyer la réponse et créer un cookie sur le client
     res.cookie('jwt', token, { httpOnly: true, maxAge: 30 * 24 * 60 * 60 * 1000 });
     return res.status(200).json({ success: true, message: `Connexion à l'utilisateur effectué avec succès`, user: { _id: user._id, email: user.email, username: user.username, role: user.role } });
 }
@@ -85,6 +85,6 @@ module.exports.login = async (req, res) => {
 module.exports.logout = async (req, res) => {
     console.log("[AUTH] Deconnexion d'un utilisateur");
     // Detruire le cookie
-    res.cookie('jwt', "", { maxAge: 1, httpOnly: true, secure: process.env.JWT_SECURE_COOKIE });
+    res.cookie('jwt', "", { maxAge: 1, httpOnly: true });
     return res.status(200).json({ success: true, message: `Deconnecté avec succès` });
 }

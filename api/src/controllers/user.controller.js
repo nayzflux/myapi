@@ -1,7 +1,5 @@
 const { isValidObjectId } = require("mongoose");
 const UserModel = require("../models/user.model");
-const { signToken } = require("../utils/token");
-const { isValidEmail, isValidUsername } = require("../utils/utils");
 
 /**
  * Récuperer un utilisateur
@@ -60,6 +58,7 @@ module.exports.update = async (req, res) => {
  */
 module.exports.remove = async (req, res) => {
     const { self, user } = req;
+    // Supprimer l'utilisateur
     user.remove();
     console.log(`[UTILISATEUR] Compte de ${user.username} supprimé par ${self.username}`);
     res.status(200).json({ success: true, message: "L'utilisateur a été supprimé avec succès", user });
@@ -67,9 +66,6 @@ module.exports.remove = async (req, res) => {
 
 module.exports.addFriend = async (req, res) => {
     const { self, user } = req;
-    const { user: target } = req.body;
-    console.log(target);
-    console.log(user._id);
 
     // Si il n'y a pas l'ID de la cible
     if (!target) return res.status(400).json({ success: false, message: "Merci de précisé l'utilisateur à qui vous souhaitez envoyé une demande d'ami" });
