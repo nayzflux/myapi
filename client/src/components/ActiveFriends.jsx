@@ -11,7 +11,6 @@ const ActiveFriends = () => {
     const router = useRouter();
 
     useEffect(() => {
-        socket.connect();
 
         socket.on('user_connection', addOnline);
         socket.on('user_disconnection', removeOnline);
