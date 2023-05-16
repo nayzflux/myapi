@@ -36,13 +36,11 @@ const LoginModal = () => {
                 <div className='space-y-1 font-semibold'>
                     <div className='flex flex-col items-center'>
                         <label>Adresse e-mail</label>
-                        <input className='font-light text-sm' type='email' placeholder='name@example.com' value={email} onChange={(e) => setEmail(e.target.value)} />
-                        <hr />
+                        <input className='font-light text-sm bg-slate-200' type='email' placeholder='name@example.com' value={email} onChange={(e) => setEmail(e.target.value)} />
                     </div>
                     <div className='flex flex-col items-center'>
                         <label>Mot de passe</label>
-                        <input className='font-light text-sm' type='password' placeholder='Taper votre mot de passe...' value={password} onChange={(e) => setPassword(e.target.value)} />
-                        <hr />
+                        <input className='font-light text-sm bg-slate-200' type='password' placeholder='Taper votre mot de passe...' value={password} onChange={(e) => setPassword(e.target.value)} />
                     </div>
                 </div>
                 <div className='flex flex-col items-center'>
