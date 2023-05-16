@@ -29,17 +29,17 @@ const LoginModal = () => {
     return (
         <div className='flex flex-col space-y-2'>
             <div className='flex flex-col'>
-                <h2 className='font-bold text-xl'>CONNEXION</h2>
-                <p>Connecter vous à votre compte MyChatApp</p>
+                <h2 className='font-bold text-xl text-center'>CONNEXION</h2>
+                <p className='text-center'>Connecter vous à votre compte MyChatApp</p>
             </div>
             <form onSubmit={handleSubmit} className='flex flex-col'>
                 <div className='space-y-1 font-semibold'>
-                    <div className='flex flex-col'>
+                    <div className='flex flex-col items-center'>
                         <label>Adresse e-mail</label>
                         <input className='font-light text-sm' type='email' placeholder='name@example.com' value={email} onChange={(e) => setEmail(e.target.value)} />
                         <hr />
                     </div>
-                    <div className='flex flex-col'>
+                    <div className='flex flex-col items-center'>
                         <label>Mot de passe</label>
                         <input className='font-light text-sm' type='password' placeholder='Taper votre mot de passe...' value={password} onChange={(e) => setPassword(e.target.value)} />
                         <hr />
