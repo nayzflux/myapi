@@ -11,7 +11,9 @@ const ActiveFriends = () => {
     const router = useRouter();
 
     useEffect(() => {
-        setOnline(user.friends?.filter(u => u.isOnline === true))
+        console.log(user);
+        console.log("ok");
+        setOnline(user?.friends?.filter(u => u.isOnline === true) || [])
 
         socket.connect();
 
@@ -22,7 +24,7 @@ const ActiveFriends = () => {
             socket.off('user_connection', addOnline);
             socket.off('user_disconnection', removeOnline);
         });
-    }, []);
+    }, [user]);
 
     const handleConversationButton = (e, user) => {
         e.preventDefault();
@@ -55,8 +57,13 @@ const ActiveFriends = () => {
 
     return (
         <div>
-            <h3>Utilisateur en ligne</h3>
+            <h3>Amis en ligne</h3>
             <div className='flex flex-row space-x-1 overflow-auto'>
+                {/* Current User */}
+                <div className='flex flex-col' key={user._id}>
+                    <img className='rounded-full w-12 h-12' src={user.picture?.url} alt="Photo de Profile" />
+                    <p>{user.username}</p>
+                </div>
                 {onlines.map(user => (
                     <div className='flex flex-col' key={user._id} onClick={(e) => handleConversationButton(e, user)}>
                         <img className='rounded-full w-12 h-12' src={user.picture?.url} alt="Photo de Profile" />

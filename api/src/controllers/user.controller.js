@@ -66,6 +66,7 @@ module.exports.remove = async (req, res) => {
 
 module.exports.addFriend = async (req, res) => {
     const { self, user } = req;
+    const { user: target } = req.body;
 
     // Si il n'y a pas l'ID de la cible
     if (!target) return res.status(400).json({ success: false, message: "Merci de précisé l'utilisateur à qui vous souhaitez envoyé une demande d'ami" });

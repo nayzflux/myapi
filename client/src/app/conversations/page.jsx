@@ -12,7 +12,9 @@ const ConversationsPage = () => {
     const router = useRouter();
 
     useEffect(() => {
+        console.log("user");
         fetchUser('@me').then((user) => {
+            console.log(user);
             setUser(user);
         }).catch((err) => {
             // Not logged In

@@ -57,7 +57,7 @@ module.exports.createWebsocket = (server) => {
         fetchUsers.set(socket.id, socket.self);
 
         // Mettre le status en ligne
-        UserModel.update({ _id: self._id }, { isOnline: true });
+        setStatus(socket, true)
 
         // Envoyer la connexion
         this.onConnection(socket.self);
@@ -78,17 +78,21 @@ module.exports.createWebsocket = (server) => {
             users.set(socket.id, null);
             fetchUsers.set(socket.id, null);
             // Mettre le status hors ligne
-            UserModel.update({ _id: self._id }, { isOnline: false });
+            setStatus(socket, false)
             // Envoyer la déconnexion
             this.onDisconnection(socket.self);
         });
     });
 }
 
+const setStatus = async (socket, status) => {
+    const user = await UserModel.findOneAndUpdate({ _id: socket.self._id }, { isOnline: status })
+}
+
 // Lorsqu'un utilisateur se connecte
 module.exports.onConnection = (user) => {
     console.log(`[WS] -> ${user.username} s'est connecté`);
-    this.emitToFriends(user, 'user_disconnection', { _id: user._id, username: user.username, picture: { url: user.picture?.url } })
+    this.emitToFriends(user, 'user_connection', { _id: user._id, username: user.username, picture: { url: user.picture?.url } })
     // io.emit('user_connection', { _id: user._id, username: user.username, picture: { url: user.picture?.url } })
 }
 
@@ -145,7 +149,7 @@ module.exports.emitToFriends = (user, event, data) => {
     // Envoyer l'event a tous les amis en ligne de l'utilisateur
     for (const [socketId, userId] of users.entries()) {
         // Si l'utilisateur fait partit de la conversation
-        if (friends.includes(userId)) {
+        if (user.friends?.includes(userId)) {
             // Envoyer le message sur le socket
             io.to(socketId).emit(event, data);
         }
