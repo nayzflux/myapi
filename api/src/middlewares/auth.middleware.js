@@ -18,7 +18,7 @@ module.exports.isAuth = async (req, res, next) => {
     if (!decoded) return res.status(403).json({ message: "Authentification invalide" });
 
     // Récupérer l'utilisateur connecter dans la base de donné
-    const self = await UserModel.findOne({ _id: decoded._id }).select("-password");
+    const self = await UserModel.findOne({ _id: decoded._id }).select("+email").populate('friends').exec();
 
     // Vérifier si l'utilisateur n'a pas été supprimer
     if (!self) return res.status(404).json({ message: "L'utilisateur n'existe pas" });

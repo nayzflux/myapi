@@ -1,5 +1,5 @@
 import { userState } from '@/atoms/userAtom';
-import { createConversation } from '@/utils/api';
+import { createConversation, fetchUser } from '@/utils/api';
 import { socket } from '@/utils/socket';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
@@ -7,7 +7,7 @@ import { useRecoilState } from 'recoil';
 
 const ActiveFriends = () => {
     const [onlines, setOnline] = useState([]);
-    // const [user, setUser] = useRecoilState(userState);
+    const [user, setUser] = useRecoilState(userState);
     const router = useRouter();
 
     useEffect(() => {
@@ -19,7 +19,7 @@ const ActiveFriends = () => {
             socket.off('user_connection', addOnline);
             socket.off('user_disconnection', removeOnline);
         });
-    }, []);
+    }, [user]);
 
     const handleConversationButton = (e, user) => {
         e.preventDefault();
@@ -52,8 +52,15 @@ const ActiveFriends = () => {
 
     return (
         <div>
-            <h3>Utilisateur en ligne</h3>
+            <h3>Amis en ligne</h3>
             <div className='flex flex-row space-x-1 overflow-auto'>
+                {/* Current User */}
+                {user ?
+                    <div className='flex flex-col' key={user?._id}>
+                        <img className='rounded-full w-12 h-12' src={user?.picture?.url} alt="Photo de Profile" />
+                        <p>{user?.username}</p>
+                    </div>
+                    : ""}
                 {onlines.map(user => (
                     <div className='flex flex-col' key={user._id} onClick={(e) => handleConversationButton(e, user)}>
                         <img className='rounded-full w-12 h-12' src={user.picture?.url} alt="Photo de Profile" />
