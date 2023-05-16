@@ -6,6 +6,7 @@ import ConversationMenu from './ConversationMenu';
 import { userState } from '@/atoms/userAtom';
 import { fetchUser } from '@/utils/api';
 import { useRouter } from 'next/navigation';
+import ConversationMenuTopBar from '@/components/ConversationMenuTopBar';
 
 const ConversationsPage = () => {
     const [user, setUser] = useRecoilState(userState);
@@ -25,7 +26,10 @@ const ConversationsPage = () => {
     }, []);
 
     return (
-        <ConversationMenu />
+        <div className='flex flex-col'>
+            <ConversationMenuTopBar />
+            <ConversationMenu />
+        </div>
     )
 }
 
