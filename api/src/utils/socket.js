@@ -5,6 +5,7 @@ const UserModel = require('../models/user.model')
 let io;
 
 let users = new Map(); // Non oppérationnel  pour scale
+let fetchUsers = new Map();
 
 function getCookie(cookie, cName) {
     const name = cName + "=";
@@ -53,18 +54,23 @@ module.exports.createWebsocket = (server) => {
     io.on('connection', (socket) => {
         // Stocker l'utilisateur et le socket 
         users.set(socket.id, socket.self._id.toString());
+        fetchUsers.set(socket.id, socket.self);
         // Envoyer la connexion
         this.onConnection(socket.self);
 
         // Envoyer une liste de tout les utilisateurs déjà en ligne
-        // for (const user of users.values()) {
-        //     socket.emit("user_connection", { username: user.username });
-        // }
+        for (const user of fetchUsers.values()) {
+            console.log(user);
+            if (user) {
+                socket.emit("user_connection", { _id: user._id, username: user.username, picture: { url: user.picture?.url } });
+            }
+        }
 
         // Quand un utilisateur se déconnecte
         socket.on("disconnect", () => {
             // Supprimer l'utilisateur et le socket 
             users.set(socket.id, null);
+            fetchUsers.set(socket.id, null);
             // Envoyer la déconnexion
             this.onDisconnection(socket.self);
             console.log("[WS] Client déconnecté");
@@ -74,20 +80,20 @@ module.exports.createWebsocket = (server) => {
     });
 }
 
-setInterval(() => {
-    console.log(users);
-}, 10_000);
+// setInterval(() => {
+//     console.log(users);
+// }, 10_000);
 
 // module.exports.onMessageCreate = (message) => {
 //     io.emit('message_create', message)
 // }
 
 module.exports.onConnection = (user) => {
-    io.emit('user_connection', { _id: user._id, username: user.username })
+    io.emit('user_connection', { _id: user._id, username: user.username, picture: { url: user.picture?.url } })
 }
 
 module.exports.onDisconnection = (user) => {
-    io.emit('user_disconnection', { _id: user._id, username: user.username })
+    io.emit('user_disconnection', { _id: user._id, username: user.username, picture: { url: user.picture?.url } })
 }
 
 // Lorsqu'un utilisateur commence à taper un message

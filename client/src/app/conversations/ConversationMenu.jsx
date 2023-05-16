@@ -7,6 +7,7 @@ import { useRecoilState } from 'recoil';
 import ConversationItem from './ConversationItem';
 import SearchUser from '@/components/SearchUser';
 import { socket } from '@/utils/socket';
+import ActiveFriends from '@/components/ActiveFriends';
 
 const ConversationMenu = () => {
     const [conversations, setConversations] = useState([]);
@@ -35,10 +36,11 @@ const ConversationMenu = () => {
     }
 
     return (
-        <div>
+        <div className='p-3'>
             {/* Search */}
             <SearchUser />
             {/* Active friends */}
+            <ActiveFriends/>
             <div className='space-y-2 p-3'>
                 {
                     conversations.map(({ _id, name, users }) => (
