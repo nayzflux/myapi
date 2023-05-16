@@ -64,7 +64,7 @@ module.exports.login = async (req, res) => {
 
     // Comparer les mot de pass
     const doesPasswordMatch = await UserModel.verifyPassword(user, password);
-    if (!doesPasswordMatch) return res.status(401).json({ success: false, message: "Mot de passe incorrect" });
+    if (!doesPasswordMatch) return res.status(403).json({ success: false, message: "Mot de passe incorrect" });
 
     // Sauvegarder le cookie avec le token
     const token = signToken(user);

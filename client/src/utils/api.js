@@ -15,18 +15,22 @@ export const sendFriendRequest = async (userId) => {
     return null;
 }
 
-export const login = async (email, password) => {
-    const response = await axios.request({
-        method: 'POST',
-        url: `${BASE_URL}/auth/login`,
-        withCredentials: true,
-        data: {
-            login: email,
-            password: password
-        }
-    });
+export const login = async (login, password) => {
+    try {
+        const response = await axios.request({
+            method: 'POST',
+            url: `${BASE_URL}/auth/login`,
+            withCredentials: true,
+            data: {
+                login,
+                password
+            }
+        });
 
-    return response?.data?.user || null;
+        return response.data.user;
+    } catch (error) {
+        throw error.response?.status || null;
+    }
 }
 
 export const register = async (username, email, password, confirmPassword) => {

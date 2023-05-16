@@ -1,14 +1,13 @@
 "use client"
 
-import AuthForm from '@/components/AuthForm'
-import LoginModal from '@/components/LoginModal'
+import LoginForm from '@/components/LoginForm'
 import React from 'react'
 
 const LoginPage = () => {
   return (
-    <div>
-      <AuthForm modal="LOGIN"/>
-    </div>
+    <div className='flex flex-col justify-center items-center h-screen w-screen'>
+      <LoginForm />
+    </div >
   )
 }
 
