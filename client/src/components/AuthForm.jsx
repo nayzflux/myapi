@@ -8,7 +8,7 @@ import Link from 'next/link';
 
 const AuthForm = ({ modal }) => {
     return (
-        <div>
+        <div className="text-center font-mono">
             Authentification
             {modal === "LOGIN" ? <LoginModal /> : <RegisterModal />}
             {modal === "LOGIN" ? <Link href='/account/register'>Vous n'avez pas encore de compte ?</Link> : <Link href='/account/login'>Vous avez déjà un compte ?</Link>}
