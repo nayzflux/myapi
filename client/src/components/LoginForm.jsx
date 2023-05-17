@@ -103,7 +103,7 @@ const LoginForm = () => {
             {/* Titre */}
             <div className='flex flex-col'>
                 <h1 className='font-bold text-2xl'>AUTHENTIFICATION</h1>
-                <p className=''>Connecter vous à votre compte <stong className='font-bold text-blue-600 underline cursor-pointer'>WaveChat</stong></p>
+                <p className=''>Connectez-vous à votre compte <stong className='font-bold text-blue-600 underline cursor-pointer'>WaveChat</stong></p>
             </div>
 
             <form className='flex flex-col text-sm space-y-4' onSubmit={handleSubmit}>
