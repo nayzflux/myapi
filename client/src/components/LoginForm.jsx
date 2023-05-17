@@ -150,7 +150,7 @@ const LoginForm = () => {
                     <label className='font-medium'>Rester connecté</label>
                 </div>
 
-                {/* Rester connecté */}
+                {/* Connexion */}
                 <div className='flex flex-row justify-end'>
                     <input type='submit' value='SE CONNECTER' className='bg-blue-600 text-white font-semibold py-1 px-3 rounded text-lg hover:shadow-lg active:scale-95 cursor-pointer ease-out transition-all duration-300' />
                 </div>
