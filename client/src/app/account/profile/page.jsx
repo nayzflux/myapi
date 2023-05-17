@@ -46,17 +46,17 @@ const AccountPage = () => {
 
                 <div className='flex flex-col bg-gray-200 bg-opacity-20 rounded-lg p-1'>
                     <label>Biographie</label>
-                    <input type='text' placeholder={user?.bio} />
+                    <input type='text' placeholder={user?.bio ? user.bio : 'Parler de vous...'} />
                 </div >
 
                 <div className='flex flex-col bg-gray-200 bg-opacity-20 rounded-lg p-1'>
                     <label>Note (affiché lorsque vous êtes en ligne)</label>
-                    <input type='text' placeholder={user?.note} />
+                    <input type='text' placeholder={user?.note ? user.note : 'Noter quelque chose...'} />
                 </div >
 
                 <div className='flex flex-col bg-gray-200 bg-opacity-20 rounded-lg p-1'>
                     <label>Photo de profile</label>
-                    <input type='text' placeholder={user?.picture?.url} />
+                    <input type='text' placeholder={user?.picture?.url ? user.picture.url : "Entrée le lien d'une photo de profil..."} />
                 </div >
                 <div>
                     <input className='text-blue-600 underline' value="Annuler" />
