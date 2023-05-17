@@ -23,7 +23,7 @@ const RegisterForm = () => {
         if (usernameError !== '' && usernameInput !== '') {
             setUsernameError('')
         }
-		if (emailError !== '' && emailInput) !== '') {
+		if (emailError !== '' && emailInput !== '') {
 			setEmailError('')
 		}
         if (passwordError !== '' && passwordInput !== '') {
@@ -188,3 +188,5 @@ const RegisterForm = () => {
     )
     
 }
+
+export default RegisterForm
