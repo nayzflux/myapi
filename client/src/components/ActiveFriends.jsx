@@ -3,7 +3,8 @@ import { createConversation, fetchUser } from '@/utils/api';
 import { socket } from '@/utils/socket';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
-import { useRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil'
+import { PlusIcon } from '@heroicons/react/24/outline';
 
 const ActiveFriends = () => {
     const [onlines, setOnline] = useState([]);
@@ -57,7 +58,10 @@ const ActiveFriends = () => {
                 {/* Current User */}
                 {user ?
                     <div className='flex flex-col' key={user?._id}>
-                        <img className='rounded-full w-12 h-12' src={user?.picture?.url} alt="Photo de Profile" />
+                        <div className='relative'>
+                            <img className='rounded-full w-12 h-12' src={user?.picture?.url} alt="Photo de Profile" />
+                            {user?.note ? <button className='text-white bg-gray-600 absolute left-0 top-0 rounded-full w-max text-xs px-1'>{user.note}</button> : <button className='text-white bg-gray-600 absolute right-0 top-0 rounded-full w-4 h-4'><PlusIcon className='text-white' /></button>}
+                        </div>
                         <p>{user?.username}</p>
                     </div>
                     : ""}

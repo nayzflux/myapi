@@ -24,6 +24,14 @@ const userSchema = new mongoose.Schema(
             required: true,
             select: false
         },
+        bio: {
+            type: String,
+            default: null
+        },
+        note: {
+            type: String,
+            default: null
+        },
         picture: {
             url: {
                 type: String,
