@@ -1,4 +1,4 @@
-const { isValidObjectId } = require("mongoose");
+const mongoose = require("mongoose");
 const UserModel = require("../models/user.model");
 
 /**
@@ -66,13 +66,13 @@ module.exports.remove = async (req, res) => {
 
 module.exports.addFriend = async (req, res) => {
     const { self, user } = req;
-    const { user: target } = req.params
+    const { user: target } = req.body;
 
     // Si il n'y a pas l'ID de la cible
     if (!target) return res.status(400).json({ success: false, message: "Merci de précisé l'utilisateur à qui vous souhaitez envoyé une demande d'ami" });
 
     // Si l'ID de la cible n'est pas valide
-    if (!isValidObjectId(target)) return res.status(400).json({ success: false, message: `${id} n'est pas un ID valide` });
+    if (!mongoose.isValidObjectId(target)) return res.status(400).json({ success: false, message: `${id} n'est pas un ID valide` });
 
     // Récupérer la cible
     const fetchTarget = await UserModel.findById(target);

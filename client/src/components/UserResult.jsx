@@ -32,6 +32,7 @@ const UserResult = ({ user }) => {
     const handleFriendRequest = (e) => {
         e.preventDefault();
         console.log("Handle friend request");
+        console.log(user._id);
         sendFriendRequest(user._id).then(() => {
             setHasSentFriendRequest(true);
         });
