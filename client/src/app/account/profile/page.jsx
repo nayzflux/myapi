@@ -106,7 +106,7 @@ const AccountPage = () => {
                             <input type="button" className='text-blue-600 text-lg underline cursor-pointer' value="Annuler" onClick={handleCancel}/>
                         </div>
                         <div className='flex flex-row justify-end'>
-                            <input className='text-white bg-blue-600 py-1 px-3 font-semibold rounded-full text-lg hover:shadow-lg hover:scale-105 cursor-pointer ease-out transition-all duration-300' type='submit' value="ENREGISTER" />
+                            <input className='text-white bg-blue-600 py-1 px-3 font-semibold rounded text-lg hover:shadow-lg active:scale-95 cursor-pointer ease-out transition-all duration-300' type='submit' value="ENREGISTER" />
                         </div>
                     </div>
                 </form >
