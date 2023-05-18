@@ -30,37 +30,38 @@ const AccountPage = () => {
         <div className='flex flex-col justify-center items-center h-screen w-screen'>
             <div className='flex flex-col space-y-5'>
                 <div className='flex flex-col'>
-                    <h1 className='font-bold text-xl'>Votre Profil</h1>
+                    <h1 className='font-bold text-2xl'>Votre Profil</h1>
                     <p>
                         Voici votre profil <strong className='font-bold text-blue-600 underline'>WaveChat</strong><br />
                         Vous pouvez modifier ici votre profil à tous moment
                     </p>
                 </div>
                 <form className='flex flex-col text-sm space-y-4' onSubmit={handleSubmit}>
+                    <label className='font-bold text-xl'>Nom d'utilisateur</label>
                     <div className='flex flex-col bg-gray-200 bg-opacity-20 rounded-lg p-1 space-y-1'>
-                        <label className='font-bold'>Nom d'utilisateur</label>
-                        <input type='text' placeholder={user?.username} />
+                        <input className='bg-transparent text-lg outline-none' type='text' placeholder={user?.username} />
                     </div>
 
+                    <label className='font-bold text-xl'>Adresse e-mail</label>                    
                     <div className='flex flex-col bg-gray-200 bg-opacity-20 rounded-lg p-1 space-y-1'>
-                        <label className='font-bold'>Adresse e-mail</label>
-                        <input type='text' placeholder={user?.email} />
+                        <input className='bg-transparent text-lg outline-none' type='text' placeholder={user?.email} />
                     </div>
 
+                    <label className='font-bold text-xl'>Biographie</label>
                     <div className='flex flex-col bg-gray-200 bg-opacity-20 rounded-lg p-1 space-y-1'>
-                        <label className='font-bold'>Biographie</label>
-                        <input type='text' placeholder={user?.bio ? user.bio : 'Parler de vous...'} />
+                        <input className='bg-transparent text-lg outline-none' type='text' placeholder={user?.bio ? user.bio : 'Parler de vous...'} />
                     </div >
 
+                    <label className='font-bold text-xl'>Note (affiché lorsque vous êtes en ligne)</label>
                     <div className='flex flex-col bg-gray-200 bg-opacity-20 rounded-lg p-1 space-y-1'>
-                        <label className='font-bold'>Note (affiché lorsque vous êtes en ligne)</label>
-                        <input type='text' placeholder={user?.note ? user.note : 'Noter quelque chose...'} />
+                        <input className='bg-transparent text-lg outline-none' type='text' placeholder={user?.note ? user.note : 'Noter quelque chose...'} />
                     </div >
 
+                    <label className='font-bold text-xl'>Photo de profile</label>
                     <div className='flex flex-col bg-gray-200 bg-opacity-20 rounded-lg p-1 space-y-1'>
-                        <label className='font-bold'>Photo de profile</label>
-                        <input type='text' placeholder={user?.picture?.url ? user.picture.url : "Entrer le lien d'une photo de profil..."} />
+                        <input className='bg-transparent text-lg outline-none' type='text' placeholder={user?.picture?.url ? user.picture.url : "Entrer le lien d'une photo de profil..."} />
                     </div >
+
                     <div className='flex flex-row'>
                         <div className='flex flex-row justify-start'>
                             <input className='text-blue-600 underline cursor-pointer' value="Annuler" />
