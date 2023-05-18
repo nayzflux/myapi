@@ -152,7 +152,7 @@ const LoginForm = () => {
 
                 {/* Connexion */}
                 <div className='flex flex-row justify-end'>
-                    <input type='submit' value='SE CONNECTER' className='bg-blue-600 text-white font-semibold py-1 px-3 rounded-full text-lg hover:shadow-lg hover:scale-105 cursor-pointer ease-out transition-all duration-300' />
+                    <input type='submit' value='SE CONNECTER' className='bg-blue-600 text-white font-semibold py-1 px-3 rounded text-lg hover:shadow-lg active:scale-95 cursor-pointer ease-out transition-all duration-300' />
                 </div>
             </form>
 
