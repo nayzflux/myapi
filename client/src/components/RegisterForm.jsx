@@ -23,11 +23,14 @@ const RegisterForm = () => {
         if (usernameError !== '' && usernameInput !== '') {
             setUsernameError('')
         }
-		if (emailError !== '' && emailInput !== '') {
-			setEmailError('')
-		}
+	if (emailError !== '' && emailInput !== '') {
+	    setEmailError('')
+	}
         if (passwordError !== '' && passwordInput !== '') {
             setPasswordError('')
+        }
+	if (confirmPasswordError !== '' && confirmPasswordInput !== '') {
+            setConfirmPasswordError('')
         }
     }, [usernameInput, emailInput, passwordInput, confirmPasswordInput])
     
