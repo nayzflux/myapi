@@ -28,7 +28,10 @@ module.exports.createWebsocket = (server) => {
 
     // Handle auth
     io.use(async (socket, next) => {
+        console.log("[WS] Auth...")
         const token = getCookie(socket.handshake.headers.cookie, "jwt"); // check if token in header
+
+        console.log(token)
 
         // Si l'utilisateur n'a pas de token
         if (!token) return next(new Error("Authentification requise"));
@@ -55,6 +58,8 @@ module.exports.createWebsocket = (server) => {
         // Stocker l'utilisateur et le socket 
         users.set(socket.id, socket.self._id.toString());
         fetchUsers.set(socket.id, socket.self);
+
+        console.log(socket.self.username)
 
         // Mettre le status en ligne
         setStatus(socket, true)
@@ -92,14 +97,14 @@ const setStatus = async (socket, status) => {
 // Lorsqu'un utilisateur se connecte
 module.exports.onConnection = (user) => {
     console.log(`[WS] -> ${user.username} s'est connecté`);
-    this.emitToFriends(user, 'user_connection', { _id: user._id, username: user.username, picture: { url: user.picture?.url } })
+    this.emitToFriends(user, 'user_connection', user)
     // io.emit('user_connection', { _id: user._id, username: user.username, picture: { url: user.picture?.url } })
 }
 
 // Lorsqu'un utilisateur se déconnecte
 module.exports.onDisconnection = (user) => {
     console.log(`[WS] -> ${user.username} s'est déconnecté`);
-    this.emitToFriends(user, 'user_disconnection', { _id: user._id, username: user.username, picture: { url: user.picture?.url } })
+    this.emitToFriends(user, 'user_disconnection', user)
     // io.emit('user_disconnection', { _id: user._id, username: user.username, picture: { url: user.picture?.url } })
 }
 
@@ -124,7 +129,7 @@ module.exports.onConversationCreate = (conversation) => {
 // Lorsqu'une conversation est quitter
 module.exports.onConversationLeave = (conversation, user) => {
     console.log(`[WS] -> ${user.username} a quitté la conversation ${conversation.name}`);
-    this.emitToConversation(conversation, 'conversation_leave', ({ _id: user._id, username: user.username }, { _id: user._id, username: user.username }))
+    this.emitToConversation(conversation, 'conversation_leave', ({ _id: user._id, username: user.username }))
 }
 
 // Emettre sur une conversation

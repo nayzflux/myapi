@@ -7,11 +7,13 @@ import { useRecoilState } from 'recoil'
 import { PlusIcon } from '@heroicons/react/24/outline';
 
 const ActiveFriends = () => {
-    const [onlines, setOnline] = useState([]);
+    const [onlines, setOnlines] = useState([]);
     const [user, setUser] = useRecoilState(userState);
     const router = useRouter();
 
     useEffect(() => {
+        // Ajouter tous les amis en lignes à la listes de amis en ligne
+        user?.friends?.map((friend) => friend.isOnline && addOnline(friend))
 
         socket.on('user_connection', addOnline);
         socket.on('user_disconnection', removeOnline);
@@ -44,11 +46,11 @@ const ActiveFriends = () => {
     }
 
     const addOnline = (online) => {
-        setOnline(old => old.find(u => u._id.toString() === online._id.toString()) ? old : [...old, online]);
+        setOnlines(old => old.find(u => u._id.toString() === online._id.toString()) ? old : [...old, online]);
     }
 
     const removeOnline = (online) => {
-        setOnline(old => old.filter(o => o._id.toString() !== online._id.toString()));
+        setOnlines(old => old.filter(o => o._id.toString() !== online._id.toString()));
     }
 
     return (
@@ -67,7 +69,10 @@ const ActiveFriends = () => {
                     : ""}
                 {onlines.map(user => (
                     <div className='flex flex-col' key={user._id} onClick={(e) => handleConversationButton(e, user)}>
-                        <img className='rounded-full w-12 h-12' src={user.picture?.url} alt="Photo de Profile" />
+                        <div className='relative'>
+                            <img className='rounded-full w-12 h-12' src={user?.picture?.url} alt="Photo de Profile" />
+                            {user?.note && <p className='text-white bg-gray-600 absolute left-0 top-0 rounded-full w-max text-xs px-1'>{user.note}</p>}
+                        </div>
                         <p>{user.username}</p>
                     </div>
                 ))}
