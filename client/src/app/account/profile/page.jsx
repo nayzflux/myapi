@@ -76,37 +76,37 @@ const AccountPage = () => {
                     </p>
                 </div>
                 <form className='flex flex-col text-sm space-y-4' onSubmit={handleSubmit}>
-                    <label className='font-bold text-xl'>Nom d'utilisateur</label>
+                    <label type='text' className='font-bold text-xl'>Nom d'utilisateur</label>
                     <div className='flex flex-col bg-gray-200 bg-opacity-20 rounded-lg p-1 space-y-1'>
                         <input className='bg-transparent text-lg outline-none' type='text' placeholder={user?.username} value={username} onChange={handleUsernameChange}/>
                     </div>
 
-                    <label className='font-bold text-xl'>Adresse e-mail</label>                    
+                    <label type='text' className='font-bold text-xl'>Adresse e-mail</label>                    
                     <div className='flex flex-col bg-gray-200 bg-opacity-20 rounded-lg p-1 space-y-1'>
                         <input className='bg-transparent text-lg outline-none' type='text' placeholder={user?.email} value={email} onChange={handleEmailChange} />
                     </div>
 
-                    <label className='font-bold text-xl'>Biographie</label>
+                    <label type='text' className='font-bold text-xl'>Biographie</label>
                     <div className='flex flex-col bg-gray-200 bg-opacity-20 rounded-lg p-1 space-y-1'>
                         <input className='bg-transparent text-lg outline-none' type='text' placeholder={user?.bio ? user.bio : 'Parler de vous...'} value={bio} onChange={handleBioChange} />
                     </div >
 
-                    <label className='font-bold text-xl'>Note (affiché lorsque vous êtes en ligne)</label>
+                    <label type='text' className='font-bold text-xl'>Note (affiché lorsque vous êtes en ligne)</label>
                     <div className='flex flex-col bg-gray-200 bg-opacity-20 rounded-lg p-1 space-y-1'>
                         <input className='bg-transparent text-lg outline-none' type='text' placeholder={user?.note ? user.note : 'Noter quelque chose...'} value={note} onChange={handleNoteChange} />
                     </div >
 
-                    <label className='font-bold text-xl'>Photo de profile</label>
+                    <label type='text' className='font-bold text-xl'>Photo de profile</label>
                     <div className='flex flex-col bg-gray-200 bg-opacity-20 rounded-lg p-1 space-y-1'>
                         <input className='bg-transparent text-lg outline-none' type='text' placeholder={user?.picture?.url ? user.picture.url : "Entrer le lien d'une photo de profil..."} value={pictureUrl} onChange={handlePictureChange} />
                     </div >
 
-                    <div className='flex flex-row'>
-                        <div className='flex flex-row justify-start'>
-                            <input type="button" className='text-blue-600 underline cursor-pointer' value="Annuler" onClick={handleCancel}/>
+                    <div className='flex flex-col justify-between'>
+                        <div className='flex justify-start'>
+                            <input type="button" className='text-blue-600 text-lg underline cursor-pointer' value="Annuler" onClick={handleCancel}/>
                         </div>
-                        <div className='flex flex-row justify-end'>
-                            <input className='text-white bg-blue-600 py-1 px-3 font-semibold rounded text-lg hover:shadow-lg active:scale-95 cursor-pointer ease-out transition-all duration-300' type='submit' value="Enregistrer" />
+                        <div className='flex justify-end'>
+                            <input className='text-white bg-blue-600 py-1 px-3 font-semibold rounded text-lg hover:shadow-lg active:scale-95 cursor-pointer ease-out transition-all duration-300' type='submit' value="ENREGISTER" />
                         </div>
                     </div>
                 </form >
