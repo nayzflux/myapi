@@ -103,7 +103,7 @@ const LoginForm = () => {
             {/* Titre */}
             <div className='flex flex-col'>
                 <h1 className='font-bold text-2xl'>AUTHENTIFICATION</h1>
-                <p className=''>Connecter vous à votre compte <stong className='font-bold text-blue-600 underline cursor-pointer'>WaveChat</stong></p>
+                <p className=''>Connectez-vous à votre compte <stong className='font-bold text-blue-600 underline'>WaveChat</stong></p>
             </div>
 
             <form className='flex flex-col text-sm space-y-4' onSubmit={handleSubmit}>
@@ -150,7 +150,7 @@ const LoginForm = () => {
                     <label className='font-medium'>Rester connecté</label>
                 </div>
 
-                {/* Rester connecté */}
+                {/* Connexion */}
                 <div className='flex flex-row justify-end'>
                     <input type='submit' value='SE CONNECTER' className='bg-blue-600 text-white font-semibold py-1 px-3 rounded text-lg hover:shadow-lg active:scale-95 cursor-pointer ease-out transition-all duration-300' />
                 </div>
