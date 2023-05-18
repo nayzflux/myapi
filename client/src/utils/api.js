@@ -112,12 +112,13 @@ export const fetchConversations = async () => {
 
 /**
  * Obtenir les messages d'un conversations
- * @param {String} conversationId 
+ * @param {String} conversationId
+ * @param {Number} limit
  */
-export const fetchConversationMessages = async (conversationId) => {
+export const fetchConversationMessages = async (conversationId, limit) => {
     const response = await axios.request({
         method: 'GET',
-        url: `${BASE_URL}/conversations/${conversationId}/messages`,
+        url: `${BASE_URL}/conversations/${conversationId}/messages?limit=${limit || 25}`,
         withCredentials: true
     });
 

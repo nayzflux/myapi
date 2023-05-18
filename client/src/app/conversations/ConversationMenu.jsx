@@ -1,53 +1,19 @@
 'use client';
 
-import { convState } from '@/atoms/convAtom';
-import { fetchConversations } from '@/utils/api';
-import React, { useEffect, useState } from 'react'
-import { useRecoilState } from 'recoil';
-import ConversationItem from './ConversationItem';
+import React from 'react'
 import SearchUser from '@/components/SearchUser';
-import { socket } from '@/utils/socket';
 import ActiveFriends from '@/components/ActiveFriends';
+import ConversationList from "@/app/conversations/components/ConversationList";
 
 const ConversationMenu = () => {
-    const [conversations, setConversations] = useState([]);
-    const [conv, setConv] = useRecoilState(convState);
-
-    useEffect(() => {
-        fetchConversations().then((conversations) => {
-            setConversations(conversations);
-        });
-
-        socket.connect();
-
-        socket.on('conversation_create', addConversation);
-
-        return (() => {
-            socket.off('conversation_create', addConversation);
-        });
-    }, []);
-
-    const addConversation = (conversation) => {
-        setConversations(old => [...old, conversation]);
-    }
-
-    const removeConversation = (conversation) => {
-        setConversations(old => old.filter(c => c !== conversation));
-    }
-
     return (
         <div className='p-3'>
             {/* Search */}
             <SearchUser />
             {/* Active friends */}
             <ActiveFriends/>
-            <div className='space-y-2 p-3'>
-                {
-                    conversations.map(({ _id, name, users }) => (
-                        <ConversationItem key={_id} _id={_id} name={name} users={users} />
-                    ))
-                }
-            </div>
+            {/* Liste conversation */}
+            <ConversationList/>
         </div>
     )
 }
